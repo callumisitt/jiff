@@ -1,0 +1,12 @@
+<div class="row">
+	<div class="small-12 columns">
+		<h1>Dashboard</h1>
+		<ul class="medium-block-grid-5">
+			<% @servers.each do |server| %>
+				<li>
+					<%= render 'server_item', server: server %>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+</div>
