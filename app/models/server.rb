@@ -20,9 +20,24 @@ class Server < ActiveRecord::Base
   def restart_apache
     sudo_ssh "apache2ctl restart"
   end
-  
+    
   def apache_config(config=nil)
-    command = config ? "printf #{config.shell} | sudo tee /etc/apache2/apache2.conf" : "cat /etc/apache2/apache2.conf"
+    file "/etc/apache2/apache2.conf", config
+  end
+  
+  def info
+    info = ssh "landscape-sysinfo"
+    info = info.split(/\n/)
+    info = info.map { |line|
+      line.gsub!(/(\s[A-Z])/, '$$' + '\1')
+      line.split('$$').map(&:strip).compact.reject(&:blank?)
+    }
+    info.pop(2)
+    info.compact.reject(&:blank?).flatten
+  end
+  
+  def file(file, contents=nil)
+    command = contents ? "printf #{contents.shell} | sudo tee #{file}" : "cat #{file}"
     sudo_ssh command
   end
   
@@ -45,4 +60,5 @@ class Server < ActiveRecord::Base
   def sudo_ssh(command)
     ssh "echo '#{pwd}' | sudo -S #{command}"
   end
+  
 end

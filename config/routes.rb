@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   root 'dashboard#index'
 
   resources :server do
-    resources :site
+    resources :site do
+      member do
+        get 'view-log'
+        match 'virtual-host-config', via: [:get, :patch]
+      end
+    end
     member do
       match 'apache-config', via: [:get, :patch]
     end

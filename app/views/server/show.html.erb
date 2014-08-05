@@ -1,8 +1,23 @@
 <%= render 'header' %>
 <div class="row">
-	<%= render 'sidebar' %>
+	<%= render 'server_sidebar' %>
   
   <div class="small-12 medium-9 columns">
-    
+    <table class="full-width">
+      <thead>
+        <tr>
+          <th colspan="2">System Info</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @server.info.each do |line| %>
+        <tr>
+          <% line = line.split(":") %>
+          <td><%= line[0] %></td>
+          <td><%= line[1] %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

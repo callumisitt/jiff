@@ -1,0 +1,14 @@
+<% case view_type %>
+<% when :index %>
+
+  <p><%= link_to site.name, server_site_path(server, site) %></p>
+  
+  
+<% when :sidebar %>
+  <p><%= site.name %></p>
+  <ul>
+    <li><%= link_to "View Log",  view_log_server_site_path(server, site) %></li>
+    <li><%= link_to "Edit Virtual Host Config",  virtual_host_config_server_site_path(server, site) %></li>
+  </ul>
+  
+<% end %>
