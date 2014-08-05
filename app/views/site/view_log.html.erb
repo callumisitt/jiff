@@ -1,10 +1,7 @@
-<%= render 'header' %>
-<div class="row">
-	<%= render 'site_sidebar' %>
-  
-  <div class="small-12 medium-9 columns">
-    <%= simple_form_for @site, url: view_log_server_site_path(@server, @site) do |f| %>
-      <%= f.input :input, label: 'Site Log', as: :text, disabled: true, input_html: { value: @site.view_log, rows: 40 } %>
-    <% end %>
-  </div>
+<%= render 'site_sidebar' %>
+
+<div class="small-12 medium-9 columns">
+  <%= simple_form_for @site, url: view_log_server_site_path(@server, @site) do |f| %>
+    <%= f.input :input, label: 'Site Log', as: :text, disabled: true, input_html: { value: @site.view_log, rows: 40 } %>
+  <% end %>
 </div>

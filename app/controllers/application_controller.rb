@@ -4,4 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   before_action :authenticate_admin_user!
+  before_action :set_defaults
+  
+  private
+  def set_defaults
+    @servers = Server.all
+  end
 end

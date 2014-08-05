@@ -1,11 +1,8 @@
-<%= render 'header' %>
-<div class="row">
-	<%= render 'site_sidebar' %>
-  
-  <div class="small-12 medium-9 columns">
-    <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
-      <%= f.input :input, label: 'Virtual Host Config', as: :text, input_html: { value: @site.virtual_host_config, rows: 40 } %>
-      <%= f.button :submit, 'Update Config' %>
-    <% end %>
-  </div>
+<%= render 'site_sidebar' %>
+
+<div class="small-12 medium-9 columns">
+  <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
+    <%= f.input :input, label: 'Virtual Host Config', as: :text, input_html: { value: @site.virtual_host_config, rows: 40 } %>
+    <%= f.button :submit, 'Update Config' %>
+  <% end %>
 </div>

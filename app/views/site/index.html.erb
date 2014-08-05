@@ -1,15 +1,12 @@
-<%= render 'header' %>
-<div class="row">
-	<%= render 'server_sidebar' %>
-  
-  <div class="small-12 medium-9 columns">
-		<h3>Sites</h3>
-		<ul class="medium-block-grid-5">
-			<% @sites.each do |site| %>
-				<li>
-					<%= render 'site_item', server: site.server, site: site, view_type: :index %>
-				</li>
-			<% end %>
-		</ul>
-  </div>
+<%= render 'server_sidebar' %>
+
+<div class="small-12 medium-9 columns">
+	<h3>Sites</h3>
+	<ul class="medium-block-grid-3">
+		<% @sites.each do |site| %>
+			<li>
+				<%= render 'site_item', server: site.server, site: site, view_type: :index %>
+			</li>
+		<% end %>
+	</ul>
 </div>

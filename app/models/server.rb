@@ -46,11 +46,6 @@ class Server < ActiveRecord::Base
   rescue
   end
   
-  private
-  def server
-    Net::SSH.start(address, user)
-  end
-  
   def ssh(command)
     server.exec! command
   rescue => e
@@ -59,6 +54,11 @@ class Server < ActiveRecord::Base
   
   def sudo_ssh(command)
     ssh "echo '#{pwd}' | sudo -S #{command}"
+  end
+  
+  private
+  def server
+    Net::SSH.start(address, user)
   end
   
 end

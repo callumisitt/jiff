@@ -2,10 +2,15 @@
 <% when :index %>
 
   <p><%= link_to site.name, server_site_path(server, site) %></p>
-  
+  <%= simple_form_for site, url: toggle_server_site_path(@server, site) do |f| %>
+    <div class="switch">
+      <input id="site-switch" type="checkbox" data-submit <%= 'checked' if site.enabled? %>>
+      <label for="site-switch"></label>
+    </div>
+  <% end %>
   
 <% when :sidebar %>
-  <p><%= site.name %></p>
+  <h4><%= link_to site.name, server_site_path(site.server, site) %></h4>
   <ul>
     <li><%= link_to "View Log",  view_log_server_site_path(server, site) %></li>
     <li><%= link_to "Edit Virtual Host Config",  virtual_host_config_server_site_path(server, site) %></li>

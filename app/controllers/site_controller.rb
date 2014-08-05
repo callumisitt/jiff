@@ -9,6 +9,9 @@ class SiteController < ApplicationController
   def show
   end
   
+  def toggle
+  end
+  
   def view_log
   end
   

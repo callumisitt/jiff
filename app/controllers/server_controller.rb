@@ -10,7 +10,7 @@ class ServerController < ApplicationController
   
   def command
     @server.send(params[:command])
-    render nothing: true
+    redirect_to server_path(@server)
   end
   
   private

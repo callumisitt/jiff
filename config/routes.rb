@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :site do
       member do
         get 'view-log'
+        match 'toggle', via: [:get, :patch]        
         match 'virtual-host-config', via: [:get, :patch]
       end
     end

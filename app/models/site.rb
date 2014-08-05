@@ -10,4 +10,9 @@ class Site < ActiveRecord::Base
   def virtual_host_config(config=nil)
     file "/etc/apache2/sites-available/#{server_ref}.conf", config
   end
+  
+  def enabled?
+    enabled = ssh "ls /etc/apache2/sites-enabled"
+    enabled.include? "#{server_ref}.conf"
+  end
 end

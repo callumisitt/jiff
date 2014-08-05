@@ -13,14 +13,15 @@
   
 <% when :sidebar %>
 
+  <h3><%= link_to server.name, server_path(server) %></h3>
   <% if server.status %>
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
     <ul>
       <li><%= link_to "Sites", server_site_index_path(server) %></li>
-      <li><%= link_to "Restart Server", server_command_path(server, :restart) %></li>
-      <li><%= link_to "Restart Apache", server_command_path(server, :restart_apache) %></li>
+      <li><%= link_to "Restart Server", server_command_path(server, :restart), data: { confirm: "Are you sure you want to restart the server?" } %></li>
+      <li><%= link_to "Restart Apache", server_command_path(server, :restart_apache), data: { confirm: "Are you sure you want to restart Apache?" } %></li>
       <li><%= link_to "Edit Apache Config", apache_config_server_path(server) %></li>
     </ul>
   <% else %>
