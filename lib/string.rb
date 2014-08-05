@@ -12,6 +12,8 @@ class String
   end
   
   def shell
-    Shellwords.escape self
+    string = Shellwords.escape self
+    string.gsub!('%', '%%')
+    string
   end
 end

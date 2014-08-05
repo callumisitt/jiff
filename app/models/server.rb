@@ -17,6 +17,10 @@ class Server < ActiveRecord::Base
     sudo_ssh "reboot"
   end
   
+  def restart_apache
+    sudo_ssh "apache2ctl restart"
+  end
+  
   def apache_config(config=nil)
     command = config ? "printf #{config.shell} | sudo tee /etc/apache2/apache2.conf" : "cat /etc/apache2/apache2.conf"
     sudo_ssh command
