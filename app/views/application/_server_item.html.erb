@@ -1,8 +1,28 @@
-<h3><%= server.name %></h3>
-<% if server.status %>
-  <% cache("#{server.name.to_slug}_os") do %>
-    <p><%= server.os %></p>
+<% case view_type %>
+<% when :dashboard %>
+
+  <h3><%= link_to server.name, server_path(server) %></h3>
+  <% if server.status %>
+    <% cache("#{server.name.to_slug}_os") do %>
+      <p><%= server.os[:name] %></p>
+    <% end %>
+    <p><%= link_to "Restart Server", server_command_path(server, :restart) %></p>
+  <% else %>
+    <p>Could not connect to server.</p>
   <% end %>
-<% else %>
-  <p>Could not connect to server.</p>
+  
+<% when :sidebar %>
+
+  <% if server.status %>
+    <% cache("#{server.name.to_slug}_os") do %>
+      <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
+    <% end %>
+    <ul>
+      <li><%= link_to "Restart Server", server_command_path(server, :restart) %></li>
+      <li><%= link_to "Edit Apache Config", apache_config_server_path(server) %></li>
+    </ul>
+  <% else %>
+    <p>Could not connect to server.</p>
+  <% end %>
+  
 <% end %>

@@ -1,4 +1,6 @@
 class String
+  require 'shellwords'
+  
   def to_slug
     value = self.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, '').to_s
     value.gsub!(/[']+/, '')
@@ -6,6 +8,10 @@ class String
     value.strip!
     value.downcase!
     value.gsub!(' ', '-')
-    return value
+    value
+  end
+  
+  def shell
+    Shellwords.escape self
   end
 end

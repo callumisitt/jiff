@@ -4,7 +4,7 @@
 		<ul class="medium-block-grid-5">
 			<% @servers.each do |server| %>
 				<li>
-					<%= render 'server_item', server: server %>
+					<%= render 'server_item', server: server, view_type: :dashboard %>
 				</li>
 			<% end %>
 		</ul>

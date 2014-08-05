@@ -19,6 +19,8 @@ gem 'uglifier'
 
 gem 'foundation-rails'
 
+gem 'simple_form'
+
 group :production, :staging do
 	gem 'therubyracer'
   gem 'newrelic_rpm'
