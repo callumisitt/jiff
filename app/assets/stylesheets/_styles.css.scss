@@ -1,0 +1,28 @@
+.panel
+{
+  border-radius: 3px;
+}
+
+img.border
+{
+  padding: 1px;
+  border: 1px solid #ccc;
+}
+
+.status
+{
+  display: inline-block;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ccc;
+  &.two
+  {
+    background-color: #bada55;
+  }
+  &.eight, &.nine
+  {
+    background-color: #d85454;
+  }
+}

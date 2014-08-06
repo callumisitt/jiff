@@ -20,4 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  online_status_0: 'Paused'
+  online_status_1: 'Not checked'
+  online_status_2: 'Online'
+  online_status_8: 'Maybe down'
+  online_status_9: 'Down'

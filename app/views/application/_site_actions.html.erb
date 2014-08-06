@@ -1,0 +1,3 @@
+<li><%= link_to "View Site",  site.url, target: '_blank' %></li>
+<li><%= link_to "View Log",  view_log_server_site_path(site.server, site) %></li>
+<li><%= link_to "Edit Virtual Host Config",  virtual_host_config_server_site_path(site.server, site) %></li>

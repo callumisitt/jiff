@@ -1,31 +1,28 @@
 <% case view_type %>
 <% when :dashboard %>
 
-  <h3><%= link_to server.name, server_path(server) %></h3>
-  <% if server.status %>
+  <h3><span class="status <%= server.status.to_words %>"></span><%= link_to server.name, server_path(server) %></h3>
+  <% if server.status == 2 %>
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
-    <p><%= link_to "Restart Server", server_command_path(server, :restart) %></p>
+    <%= render 'server_actions_dropdown', server: server %>
   <% else %>
-    <p>Could not connect to server.</p>
+    <p><em>Could not connect to server</em></p>
   <% end %>
   
 <% when :sidebar %>
 
-  <h3><%= link_to server.name, server_path(server) %></h3>
-  <% if server.status %>
+  <h3><span class="status <%= server.status.to_words %>"></span><%= link_to server.name, server_path(server) %></h3>
+  <% if server.status == 2 %>
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
     <ul>
-      <li><%= link_to "Sites", server_site_index_path(server) %></li>
-      <li><%= link_to "Restart Server", server_command_path(server, :restart), data: { confirm: "Are you sure you want to restart the server?" } %></li>
-      <li><%= link_to "Restart Apache", server_command_path(server, :restart_apache), data: { confirm: "Are you sure you want to restart Apache?" } %></li>
-      <li><%= link_to "Edit Apache Config", apache_config_server_path(server) %></li>
+      <%= render 'server_actions', server: server %>
     </ul>
   <% else %>
-    <p>Could not connect to server.</p>
+    <p><em>Could not connect to server</em></p>
   <% end %>
   
 <% end %>

@@ -46,8 +46,9 @@ class Server < ActiveRecord::Base
   end
   
   def status
-    server ? true : false
+    server ? 2 : 9
   rescue
+    return 9
   end
   
   def ssh(command)

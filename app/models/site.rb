@@ -21,4 +21,13 @@ class Site < ActiveRecord::Base
     sudo_ssh command
     server.reload_apache
   end
+  
+  def online
+    Rails.cache.fetch("online_#{id}", expires_in: 300) { online! }
+  end
+  
+  def online!
+    uptime = Api::UptimeRobot.new site: self
+    uptime.site[0]['status'].to_i unless uptime.site.empty?
+  end
 end

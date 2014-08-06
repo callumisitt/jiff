@@ -20,6 +20,9 @@ gem 'uglifier'
 gem 'foundation-rails'
 
 gem 'simple_form'
+gem "codemirror-rails"
+
+gem 'numbers_and_words'
 
 group :production, :staging do
 	gem 'therubyracer'

@@ -1,0 +1,4 @@
+<li><%= link_to "Sites", server_site_index_path(server) %></li>
+<li><%= link_to "Restart Server", server_command_path(server, :restart), data: { confirm: "Are you sure you want to restart the server?" } %></li>
+<li><%= link_to "Restart Apache", server_command_path(server, :restart_apache), data: { confirm: "Are you sure you want to restart Apache?" } %></li>
+<li><%= link_to "Edit Apache Config", apache_config_server_path(server) %></li>

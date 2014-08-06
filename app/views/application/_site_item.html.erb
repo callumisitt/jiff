@@ -1,19 +1,27 @@
 <% case view_type %>
 <% when :index %>
 
-  <p><%= link_to site.name, server_site_path(server, site) %></p>
-  <%= simple_form_for site, url: toggle_server_site_path(@server, site), remote: true do |f| %>
-    <div class="switch">
-      <input id="site-toggle" name="site[toggle]" type="checkbox" value="1" data-submit <%= 'checked' if site.enabled? %>>
-      <label for="site-toggle"></label>
+  <div class="row">
+    <div class="medium-5 columns">
+      <span class="status <%= site.online.to_words if site.online %>"></span><%= link_to site.name, server_site_path(server, site) %>
+      <%= simple_form_for site, url: toggle_server_site_path(@server, site), remote: true do |f| %>
+        <div class="switch small">
+          <input id="site-toggle-<%= site.id %>" name="site[toggle]" type="checkbox" value="1" data-submit <%= 'checked' if site.enabled? %>>
+          <label for="site-toggle-<%= site.id %>"></label>
+        </div> 
+      <% end %>
+      <%= render 'site_actions_dropdown', site: site %>
     </div>
-  <% end %>
+    <div class="medium-7 columns">
+      <%= image_tag "http://img.bitpixels.com/getthumbnail?code=18452&size=200&url=#{site.url}", class: 'border' %>
+    </div>
+  </div>
   
 <% when :sidebar %>
-  <h4><%= link_to site.name, server_site_path(site.server, site) %></h4>
+  <h4><span class="status <%= site.online.to_words if site.online %>"></span><%= link_to site.name, server_site_path(site.server, site) %></h4>
+  <p><strong>Server:</strong> <%= link_to site.server.name, site.server %></p>
   <ul>
-    <li><%= link_to "View Log",  view_log_server_site_path(server, site) %></li>
-    <li><%= link_to "Edit Virtual Host Config",  virtual_host_config_server_site_path(server, site) %></li>
+    <%= render 'site_actions', site: site %>
   </ul>
   
 <% end %>

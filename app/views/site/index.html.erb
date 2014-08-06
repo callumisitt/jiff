@@ -2,7 +2,7 @@
 
 <div class="small-12 medium-9 columns">
 	<h3>Sites</h3>
-	<ul class="medium-block-grid-3">
+	<ul class="medium-block-grid-2">
 		<% @sites.each do |site| %>
 			<li>
 				<%= render 'site_item', server: site.server, site: site, view_type: :index %>

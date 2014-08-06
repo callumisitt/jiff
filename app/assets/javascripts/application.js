@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require codemirror
+//= require codemirror/modes/shell
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

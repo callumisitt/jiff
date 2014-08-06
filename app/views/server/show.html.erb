@@ -15,6 +15,11 @@
         <td><%= line[1] %></td>
       </tr>
     <% end %>
+    <% if @server.info.empty? %>
+      <tr>
+        <td colspan="2"><em>Could not obtain server info</em></td>
+      </tr>
+    <% end %>
     </tbody>
   </table>
 </div>
