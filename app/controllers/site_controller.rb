@@ -10,6 +10,10 @@ class SiteController < ApplicationController
   end
   
   def toggle
+    state = params[:site][:toggle].to_i if params[:site]
+    state ||= 0
+    @site.toggle state
+    render nothing: true
   end
   
   def view_log

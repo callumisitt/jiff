@@ -17,6 +17,10 @@ class Server < ActiveRecord::Base
     sudo_ssh "reboot"
   end
   
+  def reload_apache
+    sudo_ssh "apache2ctl graceful"
+  end
+  
   def restart_apache
     sudo_ssh "apache2ctl restart"
   end

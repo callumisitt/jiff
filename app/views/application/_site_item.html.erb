@@ -2,10 +2,10 @@
 <% when :index %>
 
   <p><%= link_to site.name, server_site_path(server, site) %></p>
-  <%= simple_form_for site, url: toggle_server_site_path(@server, site) do |f| %>
+  <%= simple_form_for site, url: toggle_server_site_path(@server, site), remote: true do |f| %>
     <div class="switch">
-      <input id="site-switch" type="checkbox" data-submit <%= 'checked' if site.enabled? %>>
-      <label for="site-switch"></label>
+      <input id="site-toggle" name="site[toggle]" type="checkbox" value="1" data-submit <%= 'checked' if site.enabled? %>>
+      <label for="site-toggle"></label>
     </div>
   <% end %>
   
