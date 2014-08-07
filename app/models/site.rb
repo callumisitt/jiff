@@ -3,6 +3,8 @@ class Site < ActiveRecord::Base
   
   belongs_to :server
   
+  attr_accessor :input, :output
+  
   delegate :ssh, :sudo_ssh, :file, to: :server
   
   def view_log
@@ -22,6 +24,10 @@ class Site < ActiveRecord::Base
     command = state == 1 ? "a2ensite #{server_ref}" : "a2dissite #{server_ref}"
     sudo_ssh command
     server.reload_apache
+  end
+  
+  def rake(task)
+    ssh "cd #{server_ref}/current && RAILS_ENV=staging bundle exec rake #{task}"
   end
   
   def server_response

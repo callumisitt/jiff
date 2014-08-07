@@ -3,7 +3,7 @@ class Server < ActiveRecord::Base
     
   has_many :sites
   
-  attr_accessor :pwd, :input
+  attr_accessor :pwd, :input, :output
   
   def os
     name = ssh "lsb_release -d"
@@ -47,13 +47,12 @@ class Server < ActiveRecord::Base
   end
   
   def status
-    server ? 2 : 9
-  rescue
-    return 9
+    # set up proper status check
+    2
   end
   
   def ssh(command)
-    server.exec! command
+    server command
   rescue => e
     e.message
   end
@@ -62,9 +61,29 @@ class Server < ActiveRecord::Base
     ssh "echo '#{pwd}' | sudo -S #{command}"
   end
   
+  def send_message(message)
+    puts message
+    $redis.publish('server.output', message.to_json)
+  end
+  
   private
-  def server
-    Net::SSH.start(address, user)
+  def server(command)
+    @response = ''
+    Net::SSH.start(address, user) do |ssh|
+     channel = ssh.open_channel do |ch|
+        ch.exec "bash -l" do |ch2, success|
+          ch2.send_data "export TERM=vt100\n"
+          ch2.send_data "#{command}\n"
+          ch2.send_data "exit\n"
+          ch2.on_data do |ch3, data|
+            send_message data
+            @response += data
+          end
+        end
+      end
+      channel.wait
+      @response
+    end
   end
   
 end

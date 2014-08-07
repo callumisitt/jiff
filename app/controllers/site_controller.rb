@@ -23,6 +23,10 @@ class SiteController < ApplicationController
     @site.virtual_host_config(params[:site][:input]) if params[:site]
   end
   
+  def rake_task
+    @site.rake(params[:site][:input]) if params[:site]
+  end
+  
   private
   def get_site
     @site = Site.find(params[:id])

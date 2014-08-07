@@ -1,0 +1,9 @@
+<%= render 'site_sidebar' %>
+
+<div class="small-12 medium-9 columns">
+  <%= simple_form_for @site, url: rake_task_server_site_path(@server, @site), remote: true do |f| %>
+    <%= f.input :input, label: "Task" %>
+    <%= f.button :submit, 'Run Task' %>
+    <%= f.input :output, label: 'Output', as: :text, disabled: true, input_html: { rows: 40 } %>
+  <% end %>
+</div>
