@@ -4,7 +4,7 @@ module Api
     
     def initialize(*args)
       super
-      @options = {apiKey: 'u39676-48113158c4cbd0ecd845dcd8', format: 'json', noJsonCallback: 1}
+      @options = {apiKey: ENV['UPTIMEROBOT'], format: 'json', noJsonCallback: 1}
     end
     
     def monitors

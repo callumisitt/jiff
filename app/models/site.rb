@@ -1,4 +1,6 @@
 class Site < ActiveRecord::Base
+  require 'net/http'
+  
   belongs_to :server
   
   delegate :ssh, :sudo_ssh, :file, to: :server
@@ -22,12 +24,39 @@ class Site < ActiveRecord::Base
     server.reload_apache
   end
   
-  def online
-    Rails.cache.fetch("online_#{id}", expires_in: 300) { online! }
+  def server_response
+    http = Net::HTTP.new(url.remove('http://'))
+    site = Net::HTTP::Get.new('/')
+    http.request(site).response.to_hash
   end
   
-  def online!
+  def online
+    uptime['status'].to_i unless uptime.empty?
+  end
+  
+  def avg_uptime
+    uptime['alltimeuptimeratio'] unless uptime.empty?
+  end
+  
+  def latest_commit
+    github.latest_commit
+  end
+  
+  private
+  def uptime
+    Rails.cache.fetch("uptime_#{id}", expires_in: 300) { uptime! }
+  end
+  
+  def uptime!
     uptime = Api::UptimeRobot.new site: self
-    uptime.site[0]['status'].to_i unless uptime.site.empty?
+    uptime.site[0]
+  end
+  
+  def github
+    Rails.cache.fetch("github_#{id}", expires_in: 600) { github! }
+  end
+  
+  def github!
+    Api::GitHub.new site: self
   end
 end

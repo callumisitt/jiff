@@ -27,6 +27,7 @@ class Server < ActiveRecord::Base
     
   def apache_config(config=nil)
     file "/etc/apache2/apache2.conf", config
+    reload_apache if config
   end
   
   def info

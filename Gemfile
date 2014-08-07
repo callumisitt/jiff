@@ -14,7 +14,6 @@ gem 'jquery-rails'
 gem 'coffee-rails'
 gem 'sass-rails', '~> 4.0.3'
 gem 'compass-rails'
-gem 'turbolinks'
 gem 'uglifier'
 
 gem 'foundation-rails'

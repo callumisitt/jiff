@@ -26,6 +26,8 @@ class SiteController < ApplicationController
   private
   def get_site
     @site = Site.find(params[:id])
+    @online_status = @site.online.to_words if @site.online
+    @latest_commit = @site.latest_commit
     @server = @site.server
   end
 end

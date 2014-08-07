@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140725152303) do
+ActiveRecord::Schema.define(version: 20140807103324) do
 
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20140725152303) do
     t.string  "url"
     t.string  "server_ref"
     t.integer "server_id"
+    t.string  "repo"
   end
 
 end

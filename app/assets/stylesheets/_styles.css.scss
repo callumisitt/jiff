@@ -26,3 +26,22 @@ img.border
     background-color: #d85454;
   }
 }
+
+h3.name
+{
+  position: relative;
+  .favicon
+  {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.favicon
+{
+  width: 24px;
+  height: 24px;
+  margin: 0 10px;
+  vertical-align: bottom;
+}

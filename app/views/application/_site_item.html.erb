@@ -18,7 +18,7 @@
   </div>
   
 <% when :sidebar %>
-  <h4><span class="status <%= site.online.to_words if site.online %>"></span><%= link_to site.name, server_site_path(site.server, site) %></h4>
+  <h4><span class="status <%= @online_status %>"></span><%= link_to site.name, server_site_path(site.server, site) %><%= image_tag "#{site.url}/favicon.ico", class: 'favicon' %></h4>
   <p><strong>Server:</strong> <%= link_to site.server.name, site.server %></p>
   <ul>
     <%= render 'site_actions', site: site %>
