@@ -4,7 +4,7 @@ module Api
     
     def initialize(*args)
       super
-      @options = {apiKey: ENV['UPTIMEROBOT'], format: 'json', noJsonCallback: 1}
+      @options = { apiKey: Rails.application.secrets.uptime_robot, format: 'json', noJsonCallback: 1 }
     end
     
     def monitors
@@ -12,7 +12,7 @@ module Api
     end
     
     def site
-      monitors['monitors']['monitor'].select {|site| site['url'] == @site.url}
+      monitors['monitors']['monitor'].select { |site| site['url'] == @site.url }
     end
   end
 end

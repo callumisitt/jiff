@@ -4,7 +4,7 @@ module Api
     
     def initialize(*args)
       super
-      @options = {headers: { "Authorization" => "token #{ENV['GITHUB']}", "user-agent" => "Ruby on Rails" }}
+      @options = { headers: { 'Authorization' => "token #{Rails.application.secrets.github}", 'user-agent' => 'Ruby on Rails' } }
     end
     
     def repos
@@ -16,7 +16,8 @@ module Api
     end
     
     def latest_commit
-      get("/repos/WhiteAgency/#{@site.repo}/commits", @options).first
+      commit = get("/repos/WhiteAgency/#{@site.repo}/commits", @options)
+      commit.response.code.to_i == 200 ? commit.first : nil
     end
   end
 end

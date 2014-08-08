@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :set_defaults
   
   private
+  
   def set_defaults
     @servers = Server.all
   end

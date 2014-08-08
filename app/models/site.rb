@@ -11,12 +11,12 @@ class Site < ActiveRecord::Base
     file "~/#{server_ref}/current/log/staging.log"
   end
   
-  def virtual_host_config(config=nil)
+  def virtual_host_config(config = nil)
     file "/etc/apache2/sites-available/#{server_ref}.conf", config
   end
   
   def enabled?
-    enabled = ssh "ls /etc/apache2/sites-enabled"
+    enabled = ssh 'ls /etc/apache2/sites-enabled'
     enabled.try(:include?, "#{server_ref}.conf")
   end
   
@@ -37,11 +37,11 @@ class Site < ActiveRecord::Base
   end
   
   def online
-    uptime['status'].to_i unless uptime.empty?
+    uptime['status'].to_i if uptime
   end
   
   def avg_uptime
-    uptime['alltimeuptimeratio'] unless uptime.empty?
+    uptime['alltimeuptimeratio'] if uptime
   end
   
   def latest_commit
@@ -49,6 +49,7 @@ class Site < ActiveRecord::Base
   end
   
   private
+  
   def uptime
     Rails.cache.fetch("uptime_#{id}", expires_in: 300) { uptime! }
   end

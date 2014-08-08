@@ -44,7 +44,7 @@ $row-width: rem-calc(1200);
 
 // We use these to control various global styles
 // $body-bg: #fff;
-// $body-font-color: #222;
+$body-font-color: #444;
 // $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 $font-weight-normal:normal;
 $body-font-weight: $font-weight-normal;
@@ -830,7 +830,7 @@ $panel-bg: #fff;
 // $panel-padding: rem-calc(20);
 
 // We use these to set default font colors
-// $panel-font-color: #333;
+$panel-font-color: $body-font-color;
 // $panel-font-color-alt: #fff;
 
 // $panel-header-adjust: true;
@@ -1113,7 +1113,7 @@ $sub-nav-active-cursor: default;
 // These control the row padding and font styles
 // $table-row-padding: rem-calc(9 10);
 // $table-row-font-size: rem-calc(14);
-// $table-row-font-color: #222;
+$table-row-font-color: $body-font-color;
 // $table-line-height: rem-calc(18);
 
 // These are for controlling the display and margin of tables

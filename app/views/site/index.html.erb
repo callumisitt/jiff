@@ -1,6 +1,8 @@
 <%= render 'server_sidebar' %>
 
 <div class="small-12 medium-9 columns">
+  <%= render 'server_links', server: @server %>
+  
 	<h3>Sites</h3>
 	<ul class="medium-block-grid-2">
 		<% @sites.each do |site| %>

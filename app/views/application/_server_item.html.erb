@@ -6,7 +6,7 @@
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
-    <%= render 'server_actions_dropdown', server: server %>
+    <%= render 'server_actions', server: server %>
   <% else %>
     <p><em>Could not connect to server</em></p>
   <% end %>
@@ -18,9 +18,7 @@
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
-    <ul>
-      <%= render 'server_actions', server: server %>
-    </ul>
+    <%= render 'server_actions', server: server %>
   <% else %>
     <p><em>Could not connect to server</em></p>
   <% end %>

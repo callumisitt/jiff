@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 // stream output from server
 var server = $('body').data('server');
-if (server != null)
+if (server != null) {
   var source = new EventSource('/server/' + server + '/output');
   source.addEventListener('server.output', function(e) {
   	var response = $.parseJSON(e.data);

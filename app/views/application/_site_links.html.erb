@@ -1,0 +1,6 @@
+<ul class="inline-list">
+  <li><%= link_to "Site Info",  server_site_path(site.server, site) %></li>
+  <li><%= link_to "Site Log",  view_log_server_site_path(site.server, site) %></li>
+  <li><%= link_to "Virtual Host Config",  virtual_host_config_server_site_path(site.server, site) %></li>
+  <li><%= link_to "Rake Tasks",  rake_task_server_site_path(site.server, site) %></li>
+</ul>

@@ -2,20 +2,21 @@ module Api
   class Base
     include HTTParty
     
-    def initialize(options={})
+    def initialize(options = {})
       @server = options[:server]
       @site = options[:site]
     end
       
     def error(message)
-      raise message
+      fail message
     end
     
-    private 
-    def interact(method, url, options={})
+    private
+    
+    def interact(method, url, options = {})
       self.class.send(method, url, options)
     rescue SocketError
-      error "Connection error"
+      error 'Connection error'
     end
     
     def method_missing(method, *args)
@@ -28,5 +29,5 @@ module Api
     end
   end
   
-  Dir["./lib/api/*.rb"].each {|file| require file}
+  Dir['./lib/api/*.rb'].each { |file| require file }
 end

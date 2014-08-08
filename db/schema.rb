@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807103324) do
+ActiveRecord::Schema.define(version: 20140808094411) do
 
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20140807103324) do
     t.string  "server_ref"
     t.integer "server_id"
     t.string  "repo"
+    t.string  "new_relic_name"
   end
 
 end
