@@ -75,6 +75,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     libv8 (3.16.14.3)
+    link_to_active_state (1.0.7)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -140,7 +141,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (1.2.1)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
@@ -161,6 +162,7 @@ DEPENDENCIES
   foundation-rails
   httparty
   jquery-rails
+  link_to_active_state
   mysql2
   net-ssh
   newrelic_rpm

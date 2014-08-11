@@ -12,8 +12,13 @@ module Api
     end
     
     def application
-      @options.merge(query: { 'filter[name]' => @site.new_relic_name })
+      @options.merge!(query: { 'filter[name]' => @site.new_relic_name })
       get('/applications.json', @options)
+    end
+    
+    def server
+      @options.merge!(query: { 'filter[name]' => @server.hostname.strip })
+      get('/servers.json', @options)
     end
   end
 end

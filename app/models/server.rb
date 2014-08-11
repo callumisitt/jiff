@@ -13,6 +13,14 @@ class Server < ActiveRecord::Base
     { name: name, dist: dist }
   end
   
+  def ip
+    ssh 'hostname -I'
+  end
+  
+  def hostname
+    ssh 'hostname'
+  end
+  
   def restart
     sudo_ssh 'reboot'
   end
@@ -53,6 +61,10 @@ class Server < ActiveRecord::Base
     return 9
   end
   
+  def monitor
+    new_relic.server['servers'][0]
+  end
+  
   def ssh(command)
     server command
   rescue => e
@@ -66,6 +78,10 @@ class Server < ActiveRecord::Base
   def send_message(message)
     puts message
     $redis.publish('server.output', message.to_json)
+  end
+  
+  def to_s
+    name
   end
   
   private
@@ -90,6 +106,14 @@ class Server < ActiveRecord::Base
       channel.wait
       @response
     end
+  end
+  
+  def new_relic
+    Rails.cache.fetch("new_relic_#{id}", expires_in: 300) { new_relic! }
+  end
+  
+  def new_relic!
+    Api::NewRelic.new server: self
   end
   
 end

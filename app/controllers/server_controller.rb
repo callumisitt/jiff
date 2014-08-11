@@ -3,11 +3,15 @@ class ServerController < ApplicationController
   
   before_action :server, if: -> { params[:id] }
 
-  def show; end
+  def show
+    redirect_to server_site_index_path(@server)
+  end
   
   def apache_config
     @server.apache_config(params[:server][:input]) if params[:server]
   end
+  
+  def status; end
   
   def command
     @server.send(params[:command])
@@ -28,6 +32,7 @@ class ServerController < ApplicationController
   
   def server
     @server = Server.find(params[:id])
+    @monitor = @server.monitor['summary']
   end
   
   def stream_setup

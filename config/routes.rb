@@ -14,8 +14,10 @@ Rails.application.routes.draw do
     member do
       match 'apache-config', via: [:get, :patch]
       get 'output'
+      get 'status'
     end
   end
   
   get "/server/:id/:command" => "server#command", as: "command_server"
+  get "/server/:server_id/site/:id/:command" => "site#command", as: "command_site"
 end

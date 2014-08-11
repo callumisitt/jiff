@@ -3,22 +3,34 @@
 
   <h3><span class="status <%= server.status.to_words %>"></span><%= link_to server.name, server_path(server) %></h3>
   <% if server.status == 2 %>
+  
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
+    
     <%= render 'server_actions', server: server %>
+    
   <% else %>
     <p><em>Could not connect to server</em></p>
   <% end %>
   
 <% when :sidebar %>
 
+	<%= image_tag 'server.png' %>
   <h3><span class="status <%= server.status.to_words %>"></span><%= link_to server.name, server_path(server) %></h3>
   <% if server.status == 2 %>
     <% cache("#{server.name.to_slug}_os") do %>
       <p><%= image_tag "icons/#{server.os[:dist].to_slug}.png" %><%= server.os[:name] %></p>
     <% end %>
+    
     <%= render 'server_actions', server: server %>
+    
+    <% if @monitor %>
+			<p><%= image_tag 'icons/hardware.png' %> <%= @monitor['cpu'] %>% used</p>
+			<p><%= image_tag 'icons/memory.png' %> <%= number_to_human_size @monitor['memory_used']%> / <%= number_to_human_size @monitor['memory_total']%></p>
+			<p><%= image_tag 'icons/hdd.png' %> <%= number_to_human_size @monitor['fullest_disk_free'] %> free</p>
+		<% end %>
+    
   <% else %>
     <p><em>Could not connect to server</em></p>
   <% end %>

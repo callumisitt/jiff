@@ -10,6 +10,7 @@ main
 
 .panel
 {
+  border-radius: 3px;
   h1
   {
     margin-bottom: 0.6em;
@@ -24,23 +25,29 @@ main
   }
 }
 
-.sidebar
+.top-bar-section
 {
-  ul
+  li:not(.has-form) a:not(.button).active
   {
-    list-style: none;
-    margin-left: 0;
-    li
-    {
-      border-bottom: 1px dotted #ccc;
-      padding: 5px 0;
-    }
+    background-color: #008cba;
   }
 }
 
-.full-width
+.management-menu
 {
-  width: 100%;
+  margin-bottom: 20px;
+  background-color: #444;
+  .top-bar-section ul 
+  {
+    li, li:not(.has-form) a:not(.button):not(.active)
+    {
+      background-color: #444;
+      &:hover
+      {
+        background-color: #373737;
+      }
+    }
+  }
 }
 
 .CodeMirror

@@ -2,11 +2,17 @@ class SiteController < ApplicationController
   before_action :site, if: -> { params[:id] }
 
   def index
-    @sites = Site.all
     @server = Server.find(params[:server_id])
+    @sites = @server.sites
+    @monitor = @server.monitor['summary']
   end
   
   def show; end
+  
+  def command
+    @site.send(params[:command])
+    redirect_to server_site_path(@site.server, @site)
+  end
   
   def toggle
     state = params[:site][:toggle].to_i if params[:site]
@@ -29,7 +35,7 @@ class SiteController < ApplicationController
   
   def site
     @site = Site.find(params[:id])
-    @online_status = @site.online.to_words if @site.online
+    @online_status = @site.uptime(:status).to_i
     @latest_commit = @site.latest_commit
     @server = @site.server
   end

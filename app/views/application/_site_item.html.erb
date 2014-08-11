@@ -6,7 +6,7 @@
       <%= image_tag "http://img.bitpixels.com/getthumbnail?code=18452&size=200&url=#{site.url}", class: 'border' %>
     </div>
     <div class="medium-6 columns">
-      <span class="status <%= site.online.to_words if site.online %>"></span><%= link_to site.name, server_site_path(server, site) %>
+      <span class="status <%= site.uptime(:status).to_i.to_words if site.uptime(:status) %>"></span><%= link_to site.name, server_site_path(server, site) %>
       <%= simple_form_for site, url: toggle_server_site_path(@server, site), remote: true do |f| %>
         <div class="switch small">
           <input id="site-toggle-<%= site.id %>" name="site[toggle]" type="checkbox" value="1" data-submit <%= 'checked' if site.enabled? %>>
@@ -20,15 +20,15 @@
 <% when :sidebar %>
   <%= image_tag "http://img.bitpixels.com/getthumbnail?code=18452&size=200&url=#{site.url}", class: 'border' %>
   
-  <h3><span class="status <%= @online_status %>"></span><%= link_to site.name, server_site_path(site.server, site) %><%= image_tag "#{@site.url}/favicon.ico", class: 'favicon' %></h3>
+  <h3><span class="status <%= @online_status.to_words %>"></span><%= link_to site.name, server_site_path(site.server, site) %><%= image_tag "#{@site.url}/favicon.ico", class: 'favicon' %></h3>
   
   <ul class="side-nav">
     <%= render 'site_actions', site: site %>
   </ul>
   
-  <p><strong>Server:</strong> <%= link_to site.server.name, site.server %>
-  
-  <% if @online_status %><br><strong>Avg. Uptime:</strong> <%= @site.avg_uptime %>%<% end %></p>
+  <p>
+		<% if @online_status %><strong>Avg. Uptime:</strong> <%= @site.uptime :alltimeuptimeratio %>%<% end %>
+	</p>
   
   <% if @latest_commit %>
     <p><strong>Latest Commit</strong><br>

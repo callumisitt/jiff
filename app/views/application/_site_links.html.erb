@@ -1,6 +1,14 @@
-<ul class="inline-list">
-  <li><%= link_to "Site Info",  server_site_path(site.server, site) %></li>
-  <li><%= link_to "Site Log",  view_log_server_site_path(site.server, site) %></li>
-  <li><%= link_to "Virtual Host Config",  virtual_host_config_server_site_path(site.server, site) %></li>
-  <li><%= link_to "Rake Tasks",  rake_task_server_site_path(site.server, site) %></li>
-</ul>
+<nav class="top-bar management-menu" data-topbar>
+  <section class="top-bar-section">
+    <ul class="left">
+      <li><%= link_to "Site Info",  server_site_path(site.server, site), active_on: true %></li>
+      <li><%= link_to "Site Log",  view_log_server_site_path(site.server, site), active_on: true %></li>
+      <li><%= link_to "Virtual Host Config",  virtual_host_config_server_site_path(site.server, site), active_on: true %></li>
+      <li><%= link_to "Rake Tasks",  rake_task_server_site_path(site.server, site), active_on: true %></li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+		<ul class="right">
+			<li><%= link_to site.server do %><%= image_tag 'icons/server.png' %>&nbsp;&nbsp;<%= site.server %><% end %></li>
+		</ul>
+  </section>
+</nav>

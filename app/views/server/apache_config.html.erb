@@ -4,7 +4,7 @@
   <%= render 'server_links', server: @server %>
   
   <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
-    <%= f.input :input, label: 'Apache Config', as: :text, input_html: { value: @server.apache_config, data: {codemirror: true} } %>
+    <%= f.input :input, label: false, as: :text, input_html: { value: @server.apache_config, data: {codemirror: true} } %>
     <%= f.button :submit, 'Update Config' %>
   <% end %>
 </div>

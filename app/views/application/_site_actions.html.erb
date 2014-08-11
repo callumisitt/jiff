@@ -1,4 +1,5 @@
 <a href="#" class="button split">Actions <span data-dropdown="site-<%= site.id %>"></span></a><br>
 <ul id="site-<%= site.id %>" data-dropdown-content class="f-dropdown">
   <li><%= link_to "View Site",  site.url, target: '_blank' %></li>
+  <li><%= link_to "Restart App", command_site_path(site.server, site, :restart) %></li>
 </ul>

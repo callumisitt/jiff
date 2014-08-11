@@ -1,17 +1,17 @@
 <nav class="top-bar" data-topbar>
   <ul class="title-area">
     <li class="name">
-      <h1><%= link_to 'Jiff', root_url %></h1>
+      <h1><%= link_to 'Jiff', root_path %></h1>
     </li>
     <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
   </ul>
 
   <section class="top-bar-section">
     <ul class="right">
-      <li><%= link_to 'Dashboard', root_url %></li>
+      <li><%= link_to 'Dashboard', root_path, active_on: root_path %></li>
       <% if @server %>
         <li class="has-dropdown">
-          <%= link_to 'Sites', server_site_index_path(@server) %>
+          <%= link_to 'Sites', server_site_index_path(@server), active_on: /\/server\/\d\/site\/(.*)/i %>
           <ul class="dropdown">
             <% @server.sites.each do |site| %>
               <li><%= link_to site.name, server_site_path(@server, site) %></li>
@@ -20,7 +20,7 @@
         </li>
       <% end %>
       <li class="has-dropdown">
-        <%= link_to 'Servers', server_index_path %>
+        <%= link_to 'Servers', server_index_path, active_on: /\/server\/\d(\/site*)\z/i %>
         <ul class="dropdown">
           <% @servers.each do |server| %>
             <li><%= link_to server.name, server_path(server) %></li>

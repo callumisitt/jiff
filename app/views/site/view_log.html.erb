@@ -4,6 +4,6 @@
   <%= render 'site_links', site: @site %>
   
   <%= simple_form_for @site, url: view_log_server_site_path(@server, @site) do |f| %>
-    <%= f.input :input, label: 'Site Log', as: :text, disabled: true, input_html: { value: @site.view_log, rows: 40 } %>
+    <%= f.input :input, label: false, as: :text, disabled: true, input_html: { value: @site.view_log, rows: 40 } %>
   <% end %>
 </div>

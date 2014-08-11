@@ -21,6 +21,7 @@ gem 'foundation-rails'
 gem 'simple_form'
 gem "codemirror-rails"
 
+gem 'link_to_active_state'
 gem 'numbers_and_words'
 
 group :production, :staging do

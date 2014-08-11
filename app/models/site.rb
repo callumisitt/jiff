@@ -7,14 +7,6 @@ class Site < ActiveRecord::Base
   
   delegate :ssh, :sudo_ssh, :file, to: :server
   
-  def view_log
-    file "~/#{server_ref}/current/log/staging.log"
-  end
-  
-  def virtual_host_config(config = nil)
-    file "/etc/apache2/sites-available/#{server_ref}.conf", config
-  end
-  
   def enabled?
     enabled = ssh 'ls /etc/apache2/sites-enabled'
     enabled.try(:include?, "#{server_ref}.conf")
@@ -26,8 +18,20 @@ class Site < ActiveRecord::Base
     server.reload_apache
   end
   
+  def restart
+    ssh "cd #{server_ref}/current/tmp && touch restart.txt"
+  end
+  
   def rake(task)
-    ssh "cd #{server_ref}/current && RAILS_ENV=staging bundle exec rake #{task}"
+    ssh "cd #{server_ref}/current && RAILS_ENV=#{server.environment} bundle exec rake #{task}"
+  end
+  
+  def view_log
+    file "~/#{server_ref}/current/log/#{server.environment}.log"
+  end
+  
+  def virtual_host_config(config = nil)
+    file "/etc/apache2/sites-available/#{server_ref}.conf", config
   end
   
   def server_response
@@ -36,12 +40,8 @@ class Site < ActiveRecord::Base
     http.request(site).response.to_hash
   end
   
-  def online
-    uptime['status'].to_i if uptime
-  end
-  
-  def avg_uptime
-    uptime['alltimeuptimeratio'] if uptime
+  def uptime(info)
+    uptime_robot[info.to_s] if uptime_robot
   end
   
   def latest_commit
@@ -50,13 +50,13 @@ class Site < ActiveRecord::Base
   
   private
   
-  def uptime
-    Rails.cache.fetch("uptime_#{id}", expires_in: 300) { uptime! }
+  def uptime_robot
+    Rails.cache.fetch("uptime_#{id}", expires_in: 300) { uptime_robot! }
   end
   
-  def uptime!
-    uptime = Api::UptimeRobot.new site: self
-    uptime.site[0]
+  def uptime_robot!
+    uptime_robot = Api::UptimeRobot.new site: self
+    uptime_robot.site[0]
   end
   
   def github
