@@ -1,22 +1,26 @@
 <%= render 'server_sidebar' %>
 
 <div class="small-12 medium-9 columns">
-  <%= render 'server_links', server: @server %>
+  <div class="panel">
+    <%= render 'server_links', server: @server %>
   
-  <table class="full-width">
-   <tbody>
-    <% @server.info.each do |line| %>
-      <tr>
-        <% line = line.split(":") %>
-        <td><%= line[0] %></td>
-        <td><%= line[1] %></td>
-      </tr>
-    <% end %>
-    <% if @server.info.empty? %>
-      <tr>
-        <td colspan="2"><em>Could not obtain server info</em></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+    <table class="full-width">
+     <tbody>
+       <% cache("#{@server.name.to_slug}_info", expires_in: 5.minutes) do %>
+       <% @server.info.each do |line| %>
+          <tr>
+            <% line = line.split(":") %>
+            <td><%= line[0] %></td>
+            <td><%= line[1] %></td>
+          </tr>
+        <% end %>
+        <% if @server.info.empty? %>
+          <tr>
+            <td colspan="2"><em>Could not obtain server info</em></td>
+          </tr>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,3 +1,13 @@
 <div class="small-12 medium-3 columns sidebar">
-  <%= render 'server_item', server: @server, view_type: :sidebar %>
+  <div class="panel">
+	  <div class="server-item" data-server="<%= @server.id %>" data-view-type="sidebar">
+      <div class="spinner"></div>
+    </div>
+  </div>
+  
+  <div class="panel">
+    <form>
+      <textarea id="site_output"></textarea>
+    </form>
+  </div>
 </div>

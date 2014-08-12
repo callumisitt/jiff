@@ -1,11 +1,9 @@
 class Site < ActiveRecord::Base
-  require 'net/http'
+  include SSH
   
   belongs_to :server
   
-  attr_accessor :input, :output
-  
-  delegate :ssh, :sudo_ssh, :file, to: :server
+  delegate :server_id, :user, :address, to: :server
   
   def enabled?
     enabled = ssh 'ls /etc/apache2/sites-enabled'

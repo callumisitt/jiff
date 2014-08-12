@@ -12,6 +12,16 @@ $(document).ready(function() {
     });
   });
   
+  $('[class$=-item]').each(function() {
+    var item = $(this);
+    var type = $(this).data('server') ? 'server' : 'site';
+
+    $.get("/" + type + "/" + $(this).data(type) + "/view-type/" + $(this).data('view-type'), function(data) {
+      item.css('text-align', 'left');
+      item.hide().html(data).fadeIn('fast');
+    }, "html");
+  });
+  
   $("textarea").each(function() {
     $(this).scrollTop($(this)[0].scrollHeight);
   });
@@ -20,7 +30,7 @@ $(document).ready(function() {
   var server = $('body').data('server');
   if (server != null) {
     var source = new EventSource('/server/' + server + '/output');
-    source.addEventListener('server.output', function(e) {
+    source.addEventListener('server_' + server + '.output', function(e) {
     	var response = $.parseJSON(e.data);
       var output = $('#site_output');
       output.val(output.val() + response);

@@ -24,6 +24,8 @@ gem "codemirror-rails"
 gem 'link_to_active_state'
 gem 'numbers_and_words'
 
+gem 'newrelic_rpm'
+
 group :production, :staging do
 	gem 'therubyracer'
   gem 'newrelic_rpm'

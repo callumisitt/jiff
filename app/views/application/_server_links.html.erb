@@ -7,7 +7,7 @@
       <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
 		<ul class="right">
-			<li><% cache("#{server.name.to_slug}_info") do %><%= link_to "http://#{server.ip}", target: '_blank' do %><%= image_tag 'icons/globe.png' %> <%= server.ip %><% end %><% end %></li>
+			<li><% cache("#{server.name.to_slug}_ip") do %><%= link_to "http://#{server.ip}", target: '_blank' do %><%= image_tag 'icons/globe.png' %> <%= server.ip %><% end %><% end %></li>
 		</ul>
   </section>
 </nav>

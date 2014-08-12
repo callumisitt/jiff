@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
   
+  get "/server/:id/view-type/:view_type" => "server#show"
   get "/server/:id/:command" => "server#command", as: "command_server"
   get "/server/:server_id/site/:id/:command" => "site#command", as: "command_site"
 end

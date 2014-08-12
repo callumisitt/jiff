@@ -1,10 +1,14 @@
 <div class="row">
 	<div class="small-12 columns">
-		<h2>Active Servers</h2>
+		<h3>Active Servers</h3>
 		<ul class="medium-block-grid-3">
 			<% @servers.each do |server| %>
 				<li>
-					<%= render 'server_item', server: server, view_type: :dashboard %>
+          <div class="panel">
+					  <div class="server-item" data-server="<%= server.id %>" data-view-type="dashboard">
+              <div class="spinner"></div>
+            </div>
+          </div>
 				</li>
 			<% end %>
 		</ul>

@@ -23,7 +23,7 @@ module Api
       respond_to?(method) ? interact(method, *args) : super
     end
     
-    def respond_to?(method)
+    def respond_to?(method, *args)
       return true if [:put, :post, :delete, :get].include? method.to_sym
       super
     end

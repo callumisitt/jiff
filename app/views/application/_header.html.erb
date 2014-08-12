@@ -20,7 +20,7 @@
         </li>
       <% end %>
       <li class="has-dropdown">
-        <%= link_to 'Servers', server_index_path, active_on: /\/server\/\d(\/site*)\z/i %>
+        <%= link_to 'Servers', server_index_path, active_on: /\/server\/\d\/(site|.[^\/]*)\z/i %>
         <ul class="dropdown">
           <% @servers.each do |server| %>
             <li><%= link_to server.name, server_path(server) %></li>

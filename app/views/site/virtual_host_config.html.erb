@@ -1,10 +1,12 @@
 <%= render 'site_sidebar' %>
 
 <div class="small-12 medium-9 columns">
-  <%= render 'site_links', site: @site %>
-  
-  <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
-    <%= f.input :input, label: false, as: :text, input_html: { value: @site.virtual_host_config, data: {codemirror: true} } %>
-    <%= f.button :submit, 'Update Config' %>
-  <% end %>
+  <div class="panel">
+    <%= render 'site_links', site: @site %>
+
+    <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
+      <%= f.input :input, label: false, as: :text, input_html: { value: @site.virtual_host_config, data: {codemirror: true} } %>
+      <%= f.button :submit, 'Update Config' %>
+    <% end %>
+  </div>
 </div>

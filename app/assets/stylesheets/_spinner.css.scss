@@ -1,0 +1,59 @@
+@font-face {
+	font-family: 'icomoon';
+	src:url('/fonts/icomoon.eot');
+	src:url('/fonts/icomoon.eot') format('embedded-opentype'),
+		url('/fonts/icomoon.woff') format('woff'),
+		url('/fonts/icomoon.ttf') format('truetype'),
+		url('/fonts/icomoon.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@keyframes anim-rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes anim-rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.spinner {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+  
+	display: inline-block;
+	font-size:4em;
+	height: 1em;
+	line-height: 1;
+	margin: .5em;
+	-webkit-animation: anim-rotate 2s linear infinite;
+  -moz-animation: anim-rotate 2s linear infinite;
+  -o-animation: anim-rotate 2s linear infinite;
+  animation: anim-rotate 2s linear infinite;
+	color: #444;
+	text-shadow: 0 0 .25em rgba(255,255,255, .3);
+  
+  &:before
+  {
+    content: "\e600";
+  }
+}

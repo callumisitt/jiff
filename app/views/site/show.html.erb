@@ -1,21 +1,23 @@
 <%= render 'site_sidebar' %>
 
 <div class="small-12 medium-9 columns">
-  <%= render 'site_links', site: @site %>
+  <div class="panel">
+    <%= render 'site_links', site: @site %>
   
-  <table class="full-width">
-    <tbody>
-      <% @site.server_response.each do |response| %>
-        <tr>
-          <td><%= response[0].titleize %></td>
-          <td><%= truncate response[1][0], length: 50 %></td>
-        </tr>
-      <% end %>
-      <% if @server.info.empty? %>
-        <tr>
-          <td colspan="2"><em>Could not obtain server info</em></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+    <table class="full-width">
+      <tbody>
+        <% @site.server_response.each do |response| %>
+          <tr>
+            <td><%= response[0].titleize %></td>
+            <td><%= truncate response[1][0], length: 50 %></td>
+          </tr>
+        <% end %>
+        <% if @server.info.empty? %>
+          <tr>
+            <td colspan="2"><em>Could not obtain server info</em></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
