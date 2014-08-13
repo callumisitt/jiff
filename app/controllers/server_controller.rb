@@ -6,8 +6,12 @@ class ServerController < ApplicationController
   before_action :server, if: -> { params[:id] && params[:action] != 'output' }
 
   def show
-    return render partial: 'server_item', locals: { view_type: params[:view_type].to_sym, server: @server }, layout: false if request.xhr?
-    redirect_to server_site_index_path(@server)
+    view_type = params[:view_type].to_sym if ['dashboard', 'sidebar'].include? params[:view_type]
+    
+    respond_to do |format|
+      format.js { render partial: 'server_item', locals: { view_type: params[:view_type].to_sym, server: @server }, layout: false }
+      format.all { redirect_to server_site_index_path(@server) }
+    end
   end
   
   def apache_config
@@ -37,7 +41,6 @@ class ServerController < ApplicationController
   
   def server
     @server = Server.find(params[:id])
-    @monitor = @server.monitor['summary']
     @status = @server.status
   end
   

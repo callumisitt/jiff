@@ -46,6 +46,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.1)
+    colorize (0.7.3)
     compass (0.12.7)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -84,6 +85,8 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     mysql2 (0.3.16)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     newrelic_rpm (3.9.1.236)
     numbers_and_words (0.10.0)
@@ -132,6 +135,10 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    sshkit (1.5.1)
+      colorize
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
       ref
@@ -164,7 +171,6 @@ DEPENDENCIES
   jquery-rails
   link_to_active_state
   mysql2
-  net-ssh
   newrelic_rpm
   numbers_and_words
   puma
@@ -172,5 +178,6 @@ DEPENDENCIES
   redis
   sass-rails (~> 4.0.3)
   simple_form
+  sshkit
   therubyracer
   uglifier

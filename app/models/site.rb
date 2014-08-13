@@ -3,10 +3,10 @@ class Site < ActiveRecord::Base
   
   belongs_to :server
   
-  delegate :server_id, :user, :address, to: :server
+  delegate :user, :address, to: :server
   
   def enabled?
-    enabled = ssh 'ls /etc/apache2/sites-enabled'
+    enabled = ssh { capture 'ls /etc/apache2/sites-enabled' }
     enabled.try(:include?, "#{server_ref}.conf")
   end
   
@@ -17,11 +17,21 @@ class Site < ActiveRecord::Base
   end
   
   def restart
-    ssh "cd #{server_ref}/current/tmp && touch restart.txt"
+    ssh do
+      within "#{@site.server_ref}/current/tmp" do
+        execute :touch, 'restart.txt'
+      end
+    end
   end
   
   def rake(task)
-    ssh "cd #{server_ref}/current && RAILS_ENV=#{server.environment} bundle exec rake #{task}"
+    ssh output: false do
+      within 'mac/current' do
+        with rails_env: 'staging', path: '/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games' do
+          execute :rake, task
+        end
+      end
+    end
   end
   
   def view_log
@@ -44,6 +54,10 @@ class Site < ActiveRecord::Base
   
   def latest_commit
     github.latest_commit
+  end
+  
+  def ssh(*args, &block)
+    super(server, self)
   end
   
   private

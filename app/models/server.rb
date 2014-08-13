@@ -8,23 +8,23 @@ class Server < ActiveRecord::Base
   # info
   
   def os
-    name = ssh 'lsb_release -d'
-    dist = ssh 'lsb_release -i'
+    name = ssh { capture 'lsb_release -d' }
+    dist = ssh { capture 'lsb_release -i' }
     name.remove!('Description:')
     dist.remove!('Distributor ID:')
     { name: name.strip!, dist: dist.strip! }
   end
   
   def ip
-    ssh 'hostname -I'
+    ssh { capture 'hostname -I' }
   end
   
   def hostname
-    ssh 'hostname'
+    ssh { capture 'hostname' }
   end
   
   def info
-    info = ssh 'landscape-sysinfo'
+    info = ssh { capture 'landscape-sysinfo' }
     info = info.split(/\n/)
     info = info.map do |line|
       line.gsub!(/(\s[A-Z])/, '$$' + '\1')
@@ -45,11 +45,11 @@ class Server < ActiveRecord::Base
   end
   
   def reload_apache
-    sudo_ssh 'apache2ctl graceful'
+    sudo_ssh 'service apache2 graceful'
   end
   
   def restart_apache
-    sudo_ssh 'apache2ctl restart'
+    sudo_ssh 'service apache2 restart'
   end
   
   # edits
@@ -63,7 +63,7 @@ class Server < ActiveRecord::Base
   # general
   
   def status
-    start ? 2 : 9
+    hostname ? 2 : 9
   rescue
     return 9
   end
@@ -72,8 +72,8 @@ class Server < ActiveRecord::Base
     name
   end
   
-  def server_id
-    id
+  def ssh(*args)
+    super(self)
   end
   
   private

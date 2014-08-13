@@ -8,7 +8,7 @@ gem 'redis'
 gem 'devise'
 
 gem 'httparty'
-gem 'net-ssh'
+gem 'sshkit'
 
 gem 'jquery-rails'
 gem 'coffee-rails'
@@ -28,7 +28,6 @@ gem 'newrelic_rpm'
 
 group :production, :staging do
 	gem 'therubyracer'
-  gem 'newrelic_rpm'
 end
 
 group :development do
