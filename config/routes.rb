@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
     end
     member do
-      match 'apache-config', via: [:get, :patch]
+      match 'apache-config', via: [:get, :post, :patch]
       get 'output'
       get 'status'
     end

@@ -11,14 +11,14 @@ module SSH
     if contents
       sudo_ssh { execute "printf #{contents.shell} | sudo tee #{file}", sanitize: false }
     else
-      sudo_ssh { capture "cat #{file}" }
+      sudo_ssh { capture :cat, file }
     end
   end
   
-  def sudo_ssh(command = nil, &block)
+  def sudo_ssh(&block)
     ssh do
       as :root do
-        block_given? ? instance_eval(&block) : execute(command)
+        instance_eval(&block)
       end
     end
   end

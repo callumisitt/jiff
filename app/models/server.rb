@@ -3,24 +3,26 @@ class Server < ActiveRecord::Base
     
   has_many :sites
   
+  has_secure_password validations: false
+  
   COMMANDS = %w[restart reload_apache restart_apache]
   
   # info
   
   def os
-    name = ssh { capture 'lsb_release -d' }
-    dist = ssh { capture 'lsb_release -i' }
+    name = ssh { capture :lsb_release, '-d' }
+    dist = ssh { capture :lsb_release, '-i' }
     name.remove!('Description:')
     dist.remove!('Distributor ID:')
     { name: name.strip!, dist: dist.strip! }
   end
   
   def ip
-    ssh { capture 'hostname -I' }
+    ssh { capture :hostname, '-I' }
   end
   
   def hostname
-    ssh { capture 'hostname' }
+    ssh { capture :hostname }
   end
   
   def info
@@ -41,15 +43,15 @@ class Server < ActiveRecord::Base
   # commands
   
   def restart
-    sudo_ssh 'reboot'
+    sudo_ssh { execute :reboot }
   end
   
   def reload_apache
-    sudo_ssh 'service apache2 graceful'
+    sudo_ssh { execute :service, 'apache2', 'graceful' }
   end
   
   def restart_apache
-    sudo_ssh 'service apache2 restart'
+    sudo_ssh { execute :service, 'apache2', 'restart' }
   end
   
   # edits
@@ -72,10 +74,10 @@ class Server < ActiveRecord::Base
     name
   end
   
-  def ssh(*args)
+  def ssh(*args, &block)
     super(self)
   end
-  
+
   private
   
   def new_relic

@@ -6,13 +6,13 @@ class Site < ActiveRecord::Base
   delegate :user, :address, to: :server
   
   def enabled?
-    enabled = ssh { capture 'ls /etc/apache2/sites-enabled' }
+    enabled = ssh { capture :ls, '/etc/apache2/sites-enabled' }
     enabled.try(:include?, "#{server_ref}.conf")
   end
   
   def toggle(state)
-    command = state == 1 ? "a2ensite #{server_ref}" : "a2dissite #{server_ref}"
-    sudo_ssh command
+    command = state == 1 ? :a2ensite : :a2dissite
+    sudo_ssh { execute command, @site.server_ref }
     server.reload_apache
   end
   

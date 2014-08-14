@@ -50,7 +50,49 @@ module SSHKit
       orig_sanitize unless options[:sanitize] == false
     end
   end
+
+  module Backend
+  	class Netssh
+
+		  def _execute(*args)
+	      command(*args).tap do |cmd|
+	        output << cmd
+	        cmd.started = true
+	        with_ssh do |ssh|
+	          ssh.open_channel do |chan|
+	            chan.request_pty if @server.pwd
+	            chan.exec cmd.to_command do |ch, success|
+	              chan.on_data do |ch, data|
+                  if data.include? 'password for'
+              	    ch.send_data "#{@server.pwd}\n"
+                  else
+  	                cmd.stdout = data
+  	                cmd.full_stdout += data.remove(/\r/)
+  	                output << cmd
+                  end
+	              end
+	              chan.on_extended_data do |ch, type, data|
+	                cmd.stderr = data
+	                cmd.full_stderr += data
+	                output << cmd
+	              end
+	              chan.on_request("exit-status") do |ch, data|
+	                cmd.stdout = ''
+	                cmd.stderr = ''
+	                cmd.exit_status = data.read_long
+	                output << cmd
+	              end
+	            end
+	            chan.wait
+	          end
+	          ssh.loop
+	        end
+	      end
+	    end
+    end
+  end
 end
 
 SSHKit.config.command_map.prefix[:rake].push('bundle exec')
 SSHKit.config.output = ServerOutputFormatter.new($stdout)
+SSHKit.config.output_verbosity = Logger::DEBUG

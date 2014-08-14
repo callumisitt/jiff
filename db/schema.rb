@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811140610) do
+ActiveRecord::Schema.define(version: 20140814133352) do
 
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20140811140610) do
     t.string "address"
     t.string "user"
     t.string "environment"
+    t.string "password_digest"
   end
 
   create_table "sites", force: true do |t|

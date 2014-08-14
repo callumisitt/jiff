@@ -12,7 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require foundation
+//= require foundation/foundation
+//= require foundation/foundation.topbar
+//= require foundation/foundation.dropdown
+//= require foundation/foundation.reveal
 //= require codemirror
 //= require codemirror/modes/shell
 //= require_tree .

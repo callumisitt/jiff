@@ -6,6 +6,7 @@ gem 'mysql2'
 gem 'redis'
 
 gem 'devise'
+gem 'bcrypt'
 
 gem 'httparty'
 gem 'sshkit'

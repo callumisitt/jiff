@@ -4,7 +4,6 @@ class SiteController < ApplicationController
   def index
     @server = Server.find(params[:server_id])
     @sites = @server.sites
-    @monitor = @server.monitor['summary']
   end
   
   def show; end

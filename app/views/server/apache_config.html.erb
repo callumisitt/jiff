@@ -4,9 +4,23 @@
   <div class="panel">
     <%= render 'server_links', server: @server %>
   
-    <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
-      <%= f.input :input, label: false, as: :text, input_html: { value: @server.apache_config, data: {codemirror: true} } %>
-      <%= f.button :submit, 'Update Config' %>
+    <% if @sudo_password %>
+      <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
+        <%= f.input :input, label: false, as: :text, input_html: { value: @server.apache_config, data: {codemirror: true} } %>
+        <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @pwd_not_needed %>
+        <%= f.button :submit, 'Update Config' %>
+      <% end %>
+    <% else %>
+      <div class="panel callout radius">
+        <p><em>Sudo access required for this resource.</em></p>
+      </div>
+      <div id="sudo" class="reveal-modal tiny" data-reveal>
+        <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
+          <%= f.input :password, label: false, placeholder: 'Sudo password needed...', as: :password %>
+          <%= f.button :submit, 'Set Password' %>
+        <% end %>
+        <a class="close-reveal-modal">&#215;</a>
+      </div>
     <% end %>
   </div>
 </div>

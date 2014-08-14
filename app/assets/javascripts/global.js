@@ -26,6 +26,8 @@ $(document).ready(function() {
     $(this).scrollTop($(this)[0].scrollHeight);
   });
   
+  $('#sudo').foundation('reveal', 'open');
+  
   // stream output from server
   var server = $('body').data('server');
   if (server != null) {
@@ -33,6 +35,11 @@ $(document).ready(function() {
     source.addEventListener('server_' + server + '.output', function(e) {
     	var response = $.parseJSON(e.data);
       var output = $('#site_output');
+      console.log(response);
+      if (response.indexOf('password for') > -1)
+      {
+        alert("Sudo requested");
+      }
       output.val(output.val() + response);
       output.scrollTop(output[0].scrollHeight - output.height());
     });

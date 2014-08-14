@@ -1,5 +1,5 @@
-<a href="#" class="button split">Actions <span data-dropdown="server-<%= server.id %>"></span></a><br>
-<ul id="server-<%= server.id %>" data-dropdown-content class="f-dropdown">
+<a href="#" class="button split">Actions <span data-dropdown="server-dropdown-<%= server.id %>"></span></a><br>
+<ul id="server-dropdown-<%= server.id %>" data-dropdown-content class="f-dropdown">
   <li><%= link_to "Restart Server", command_server_path(server, :restart), data: { confirm: "Are you sure you want to restart the server?" } %></li>
   <li><%= link_to "Restart Apache", command_server_path(server, :restart_apache), data: { confirm: "Are you sure you want to restart Apache?" } %></li>
   <li><%= link_to "Reload Apache", command_server_path(server, :reload_apache), data: { confirm: "Are you sure you want to reload Apache?" } %></li>
