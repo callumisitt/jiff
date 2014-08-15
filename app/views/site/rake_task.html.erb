@@ -5,8 +5,14 @@
     <%= render 'site_links', site: @site %>
   
     <%= simple_form_for @site, url: rake_task_server_site_path(@server, @site), remote: true do |f| %>
-      <%= f.input :input, label: "Task" %>
-      <%= f.button :submit, 'Run Task' %>
+    	<div class="row">
+    		<div class="medium-4 columns">
+     			<%= f.input :input, label: false, placeholder: 'Task' %>
+     		</div>
+     		<div class="medium-8 columns">
+     			<%= f.button :submit, 'Run Task' %>
+     		</div>
+     	</div>
       <%= f.input :output, label: 'Output', as: :text, disabled: true, input_html: { rows: 40 } %>
     <% end %>
   </div>

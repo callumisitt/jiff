@@ -14,7 +14,7 @@
           </div>
           <div class="medium-6 columns monitor">
 
-            <% if monitor = server.monitor['summary'] %>
+            <% if server.monitor && monitor = server.monitor['summary'] %>
         			<p><%= image_tag 'icons/hardware.png' %> <%= monitor['cpu'] %>% used</p>
         			<p><%= image_tag 'icons/memory.png' %> <%= number_to_human_size monitor['memory_used']%> / <%= number_to_human_size monitor['memory_total']%></p>
         			<p><%= image_tag 'icons/hdd.png' %> <%= number_to_human_size monitor['fullest_disk_free'] %> free</p>
@@ -40,7 +40,7 @@
         
       <%= render 'server_actions', server: server %>
     
-      <% if monitor = server.monitor['summary'] %>
+      <% if server.monitor && monitor = server.monitor['summary'] %>
   			<p><%= image_tag 'icons/hardware.png' %> <%= monitor['cpu'] %>% used</p>
   			<p><%= image_tag 'icons/memory.png' %> <%= number_to_human_size monitor['memory_used']%> / <%= number_to_human_size monitor['memory_total']%></p>
   			<p><%= image_tag 'icons/hdd.png' %> <%= number_to_human_size monitor['fullest_disk_free'] %> free</p>

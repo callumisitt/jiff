@@ -11,16 +11,7 @@
         <%= f.button :submit, 'Update Config' %>
       <% end %>
     <% else %>
-      <div class="panel callout radius">
-        <p><em>Sudo access required for this resource.</em></p>
-      </div>
-      <div id="sudo" class="reveal-modal tiny" data-reveal>
-        <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
-          <%= f.input :password, label: false, placeholder: 'Sudo password needed...', as: :password %>
-          <%= f.button :submit, 'Set Password' %>
-        <% end %>
-        <a class="close-reveal-modal">&#215;</a>
-      </div>
+      <%= render 'sudo_form', item: @server, url: apache_config_server_path(@server) %>
     <% end %>
   </div>
 </div>

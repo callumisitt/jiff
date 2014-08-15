@@ -4,13 +4,13 @@ class ServerController < ApplicationController
   newrelic_ignore only: [:output]
   
   before_action :server, except: [:output], if: -> { params[:id] }
-  before_action :authenticate_sudo, only: [:apache_config]
+  before_action -> { authenticate_sudo params.fetch(:server, {}).fetch(:password, nil) }, only: [:apache_config]
 
   def show
     view_type = params[:view_type].to_sym if ['dashboard', 'sidebar'].include? params[:view_type]
     
     respond_to do |format|
-      format.js { render partial: 'server_item', locals: { view_type: params[:view_type].to_sym, server: @server }, layout: false }
+      format.js { render partial: 'server_item', locals: { view_type: view_type, server: @server }, layout: false }
       format.all { redirect_to server_site_index_path(@server) }
     end
   end
@@ -43,18 +43,6 @@ class ServerController < ApplicationController
   def server
     @server = Server.find(params[:id])
     @status = @server.status
-  end
-  
-  def authenticate_sudo
-    if params[:server] && @server.authenticate(params[:server][:password])
-      @server.pwd = params[:server][:password]
-      @sudo_password = true
-    elsif @server.password_digest.nil?
-      @sudo_password = true
-      @pwd_not_needed = true
-    else
-      @sudo_password = false
-    end
   end
   
   def stream_setup

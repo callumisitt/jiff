@@ -1,0 +1,20 @@
+<div data-alert class="alert-box info radius">
+  Sudo access required for this resource.
+  <a href="#" class="close">&times;</a>
+</div>
+
+<div id="sudo" class="reveal-modal tiny" data-reveal>
+
+	<% if flash[:error] %>
+	 	<div data-alert class="alert-box alert">
+		  <%= flash[:error] %>
+		  <a href="#" class="close">&times;</a>
+		</div>
+	<% end %>
+
+  <%= simple_form_for item, url: url do |f| %>
+    <%= f.input :password, label: false, placeholder: 'Sudo password needed...', as: :password %>
+    <%= f.button :submit, 'Set Password' %>
+  <% end %>
+ 
+</div>

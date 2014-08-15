@@ -26,8 +26,8 @@ class Site < ActiveRecord::Base
   
   def rake(task)
     ssh output: false do
-      within 'mac/current' do
-        with rails_env: 'staging', path: '/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games' do
+      within "~/#{@site.server_ref}/current" do
+        with rails_env: @server.environment, path: '~/.rbenv/shims' do
           execute :rake, task
         end
       end

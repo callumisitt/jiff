@@ -16,6 +16,7 @@
 //= require foundation/foundation.topbar
 //= require foundation/foundation.dropdown
 //= require foundation/foundation.reveal
+//= require foundation/foundation.alert
 //= require codemirror
 //= require codemirror/modes/shell
 //= require_tree .
