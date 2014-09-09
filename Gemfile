@@ -1,19 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.5'
 
 gem 'mysql2'
 gem 'redis'
 
 gem 'devise'
-gem 'bcrypt'
 
 gem 'httparty'
 gem 'sshkit'
 
 gem 'jquery-rails'
 gem 'coffee-rails'
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails'
 gem 'compass-rails'
 gem 'uglifier'
 

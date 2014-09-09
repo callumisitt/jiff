@@ -1,6 +1,6 @@
 namespace :jiff do
   
-  desc "Create default site"
+  desc "Create management environment"
   task launch: :environment do
     
     Rake::Task['db:reset'].invoke
@@ -13,13 +13,16 @@ namespace :jiff do
     
     puts '>>>> Creating Servers'
     
-    @server_test = Server.create!(name: 'Test Server', address: 'test.white-agency.co.uk', user: 'rails')
+    @server_test = Server.create! name: 'Test Server', address: 'test.white-agency.co.uk', user: 'rails', password: 'px7mkp6uc224', environment: 'staging', environment_paths: '/home/rails/.rvm/gems/ruby-1.9.3-p125/bin:/home/rails/.rvm/gems/ruby-1.9.3-p125@global/bin:/home/rails/.rvm/rubies/ruby-1.9.3-p125/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/rails/.rvm/bin:/home/rails/.rvm/bin'
+    
+    @server_vagrant = Server.create! name: 'Vagrant', address: 'default', user: 'vagrant', environment: 'production', environment_paths: '/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games'
     
     puts '>>>> Creating Sites'
     
-    Site.create!(name: 'Headlands', url: 'hd.test.white-agency.co.uk', server_ref: 'headlands', server: @server_test)
-    Site.create!(name: 'Medical Accident Claimline', url: 'mac.test.white-agency.co.uk', server_ref: 'mac', server: @server_test)
-    Site.create!(name: 'Minster Cycles', url: 'mc.test.white-agency.co.uk', server_ref: 'Minster', server: @server_test)
+    Site.create! name: 'Headlands', url: 'http://www.headlandsschool.co.uk', server_ref: 'headlands', server: @server_test, repo: 'headlands'
+    Site.create! name: 'Medical Accident Claimline', url: 'http://www.medicalaccidentclaimline.co.uk', server_ref: 'mac', server: @server_test, repo: 'mac'
+    Site.create! name: 'Minster Cycles', url: 'http://www.minstercycles.co.uk', server_ref: 'Minster', server: @server_test, repo: 'm-cycles'
+    Site.create! name: 'Medical Accident Claimline', url: 'http://www.medicalaccidentclaimline.co.uk', server_ref: 'mac', server: @server_vagrant, repo: 'mac'
 
   end
 end

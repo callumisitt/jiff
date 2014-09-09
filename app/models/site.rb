@@ -7,7 +7,7 @@ class Site < ActiveRecord::Base
   
   def enabled?
     enabled = ssh { capture :ls, '/etc/apache2/sites-enabled' }
-    enabled.try(:include?, "#{server_ref}.conf")
+    enabled.try(:include?, "#{server_ref}")
   end
   
   def toggle(state)
@@ -25,21 +25,19 @@ class Site < ActiveRecord::Base
   end
   
   def rake(task)
-    ssh output: false do
+    ssh options = { output: true } do
       within "~/#{@site.server_ref}/current" do
-        with rails_env: @server.environment, path: '~/.rbenv/shims' do
-          execute :rake, task
-        end
+        execute :rake, task
       end
     end
   end
   
   def view_log
-    file "~/#{server_ref}/current/log/#{server.environment}.log"
+    log_file "~/#{server_ref}/current/log/#{server.environment}.log"
   end
   
   def virtual_host_config(config = nil)
-    file "/etc/apache2/sites-available/#{server_ref}.conf", config
+    file "/etc/apache2/sites-available/#{server_ref}", config
   end
   
   def server_response
@@ -56,26 +54,17 @@ class Site < ActiveRecord::Base
     github.latest_commit
   end
   
-  def ssh(*args, &block)
-    super(server, self)
+  def ssh(options = { }, &block)
+    super(server, self, options)
   end
   
   private
   
   def uptime_robot
-    Rails.cache.fetch("uptime_#{id}", expires_in: 300) { uptime_robot! }
-  end
-  
-  def uptime_robot!
-    uptime_robot = Api::UptimeRobot.new site: self
-    uptime_robot.site[0]
+    Rails.cache.fetch("uptime_#{id}", expires_in: 300) { Api::UptimeRobot.new(site: self).site[0] }
   end
   
   def github
-    Rails.cache.fetch("github_#{id}", expires_in: 600) { github! }
-  end
-  
-  def github!
-    Api::GitHub.new site: self
+    Rails.cache.fetch("github_#{id}", expires_in: 600) { Api::GitHub.new site: self }
   end
 end

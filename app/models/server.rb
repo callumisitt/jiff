@@ -4,6 +4,8 @@ class Server < ActiveRecord::Base
   has_many :sites
   
   has_secure_password validations: false
+
+  attr_reader :log
   
   COMMANDS = %w[restart reload_apache restart_apache]
   
@@ -35,6 +37,16 @@ class Server < ActiveRecord::Base
     info.pop(2)
     info.compact.reject(&:blank?).flatten
   end
+
+  def logs(directory = '/var/log/', log_files = [])
+  	files = sudo_ssh { capture :ls, '-F', '-1', directory }
+  	files = files.split(/\n/).map! { |file| "#{directory}#{file}" }
+  	files.each do |log|
+  		logs(log, log_files) if log.match /\/\z/
+  	end
+  	log_files.concat(files).reject! { |log| log =~ /\.\d/ || log.match(/\/\z/) }
+  	log_files.sort_by(&:downcase)
+  end
   
   def monitor
     new_relic.server['servers'][0]
@@ -65,6 +77,7 @@ class Server < ActiveRecord::Base
   # general
   
   def status
+  	# using same status codes as Uptime Robot for consistency
     hostname ? 2 : 9
   rescue
     return 9
@@ -74,18 +87,14 @@ class Server < ActiveRecord::Base
     name
   end
   
-  def ssh(*args, &block)
-    super(self)
+  def ssh(options = { }, &block)
+    super(self, nil, options)
   end
 
   private
   
   def new_relic
-    Rails.cache.fetch("new_relic_#{id}", expires_in: 300) { new_relic! }
-  end
-  
-  def new_relic!
-    Api::NewRelic.new server: self
+    Rails.cache.fetch("new_relic_#{id}", expires_in: 300) { Api::NewRelic.new server: self }
   end
   
 end

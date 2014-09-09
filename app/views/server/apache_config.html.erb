@@ -4,7 +4,7 @@
   <div class="panel">
     <%= render 'server_links', server: @server %>
   
-    <% if @sudo_password %>
+    <% if @sudo_password || @pwd_not_needed %>
       <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
         <%= f.input :input, label: false, as: :text, input_html: { value: @server.apache_config, data: {codemirror: true} } %>
         <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @pwd_not_needed %>

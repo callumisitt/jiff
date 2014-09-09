@@ -4,8 +4,9 @@
   <div class="panel">
     <%= render 'site_links', site: @site %>
 
-    <%= simple_form_for @site, url: view_log_server_site_path(@server, @site) do |f| %>
-      <%= f.input :input, label: false, as: :text, disabled: true, input_html: { value: @site.view_log, rows: 40 } %>
+    <%= simple_form_for @site, url: view_log_server_site_path(@server, @site), remote: true do |f| %>
+    	<%= f.input :ajax, as: :hidden, input_html: { value: true } %>
+      <%= f.input :output, label: false, as: :text, disabled: true, input_html: { class: 'ajax output', rows: 40 } %>
     <% end %>
   </div>
 </div>

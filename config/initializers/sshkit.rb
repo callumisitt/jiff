@@ -22,14 +22,13 @@ class ServerOutputFormatter < SSHKit::Formatter::Abstract
       command.stdout.lines.each do |line|
         line += "\n" unless line[-1] == "\n"
         original_output << line
-        send_message line, command.options[:env][:server]
+        send_message line, command.options[:server] if command.options[:output] == true
       end
     end
 
     if command.finished?
       message = "Finished in #{sprintf('%5.3f seconds', command.runtime)} with exit status #{command.exit_status} (#{ command.failure? ? 'failed' : 'successful' }).\n"
       original_output << message
-      send_message message, command.options[:env][:server]
     end
   end
 
@@ -56,7 +55,7 @@ module SSHKit
 
 		  def _execute(*args)
 	      command(*args).tap do |cmd|
-	        output << cmd
+	      	cmd.options.merge! @options
 	        cmd.started = true
 	        with_ssh do |ssh|
 	          ssh.open_channel do |chan|

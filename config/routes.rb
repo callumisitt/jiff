@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :server do
     resources :site do
       member do
-        get 'view-log'
+        match 'view-log', via: [:get, :patch]
         match 'toggle', via: [:get, :patch]
         match 'virtual-host-config', via: [:get, :patch]
         match 'rake-task', via: [:get, :patch]
@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     end
     member do
       match 'apache-config', via: [:get, :post, :patch]
+      match 'view-log', via: [:get, :patch]
       get 'output'
       get 'status'
     end

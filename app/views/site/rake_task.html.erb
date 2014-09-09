@@ -10,10 +10,10 @@
      			<%= f.input :input, label: false, placeholder: 'Task' %>
      		</div>
      		<div class="medium-8 columns">
-     			<%= f.button :submit, 'Run Task' %>
+     			<%= f.button :submit, 'Run Task', 'data-submit' => :true %>
      		</div>
      	</div>
-      <%= f.input :output, label: 'Output', as: :text, disabled: true, input_html: { rows: 40 } %>
+      <%= f.input :output, label: 'Output', as: :text, disabled: true, input_html: { class: 'output', rows: 40 } %>
     <% end %>
   </div>
 </div>

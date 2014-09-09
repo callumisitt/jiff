@@ -3,10 +3,15 @@
 <div class="small-12 medium-9 columns">
   <div class="panel">
     <%= render 'site_links', site: @site %>
-
-    <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
-      <%= f.input :input, label: false, as: :text, input_html: { value: @site.virtual_host_config, data: {codemirror: true} } %>
-      <%= f.button :submit, 'Update Config' %>
+    
+    <% if @sudo_password || @pwd_not_needed %>
+      <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
+        <%= f.input :input, label: false, as: :text, input_html: { value: @site.virtual_host_config, data: {codemirror: true} } %>
+        <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @pwd_not_needed %>
+        <%= f.button :submit, 'Update Config' %>
+      <% end %>
+    <% else %>
+      <%= render 'sudo_form', item: @server, url: virtual_host_config_server_site_path(@server, @site) %>
     <% end %>
   </div>
 </div>

@@ -4,7 +4,7 @@ class ServerController < ApplicationController
   newrelic_ignore only: [:output]
   
   before_action :server, except: [:output], if: -> { params[:id] }
-  before_action -> { authenticate_sudo params.fetch(:server, {}).fetch(:password, nil) }, only: [:apache_config]
+  before_action -> { authenticate_sudo params.fetch(:server, {}).fetch(:password, nil) }, only: [:apache_config, :view_log]
 
   def show
     view_type = params[:view_type].to_sym if ['dashboard', 'sidebar'].include? params[:view_type]
@@ -17,6 +17,13 @@ class ServerController < ApplicationController
   
   def apache_config
     @server.apache_config(params[:server][:input]) if params[:server] && @sudo_password
+  end
+
+  def view_log
+  	if params[:server] && params[:server][:log]
+	  	@file = params[:server][:log] 
+	  	@server_log = @server.log_file(@file)
+	  end
   end
   
   def status; end
@@ -35,7 +42,7 @@ class ServerController < ApplicationController
     logger.info 'Closed stream'
   ensure
     @redis.quit
-    response.stream.close
+    @sse.close
   end
   
   private
@@ -51,10 +58,10 @@ class ServerController < ApplicationController
   end
   
   def stream_subscribe
+    @sse = SSE.new(response.stream)
     @redis.subscribe("server_#{params[:id]}.output") do |on|
       on.message do |event, data|
-        response.stream.write("event: #{event}\n")
-        response.stream.write("data: #{data}\n\n")
+        @sse.write(data, event: event)
       end
     end
   end
