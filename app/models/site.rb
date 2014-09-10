@@ -33,11 +33,13 @@ class Site < ActiveRecord::Base
   end
   
   def view_log
-    log_file "~/#{server_ref}/current/log/#{server.environment}.log"
+    log_file "~/#{server_ref}/current/log/#{server.environment}.log", false
   end
   
-  def virtual_host_config(config = nil)
-    file "/etc/apache2/sites-available/#{server_ref}", config
+  def virtual_host_config(content = nil)
+    puts "PWD: #{server.pwd}"
+    puts "CONTENT: #{content}"
+    file "/etc/apache2/sites-available/#{server_ref}*", content
   end
   
   def server_response

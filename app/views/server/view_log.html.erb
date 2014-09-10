@@ -1,10 +1,10 @@
 <%= render 'server_sidebar' %>
 
-<div class="small-12 medium-9 columns">
+<div class="small-12 large-9 columns">
   <div class="panel">
     <%= render 'server_links', server: @server %>
   
-    <% if @sudo_password || @pwd_not_needed %>
+    <% if @password %>
       <%= simple_form_for @server, url: view_log_server_path(@server), remote: true do |f| %>	    
 	      <%= f.input :log, as: :select, collection: @server.logs, label_method: ->(log) { log.remove('/var/log/') }, selected: @file, include_blank: true, input_html: { data: { 'option-submit' => :true } } %>
         <%= f.input :output, label: false, as: :text, disabled: true, input_html: { class: 'output', value: @server_log, rows: 40 } %>

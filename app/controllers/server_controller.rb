@@ -16,7 +16,9 @@ class ServerController < ApplicationController
   end
   
   def apache_config
-    @server.apache_config(params[:server][:input]) if params[:server] && @sudo_password
+    @server.apache_config(params[:server][:input]) if params[:server] && @password
+  rescue => e
+    flash[:error] = e.to_s.lines.last
   end
 
   def view_log

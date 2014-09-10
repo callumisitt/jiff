@@ -10,17 +10,19 @@ class ApplicationController < ActionController::Base
   	flash.delete(:error)
 
     if password
+      @sudo_password = false
+      
     	if @server.authenticate(password)
 	      @server.pwd = password
-	      return @sudo_password = true
+	      @sudo_password = true
 	    else
 	    	flash[:error] = 'Sorry, try again.'
 	    end
     elsif @server.password_digest.nil?
       @pwd_not_needed = true
     end
-
-    @sudo_password = false
+    
+    @password = @sudo_password || @pwd_not_needed
   end
   
   private

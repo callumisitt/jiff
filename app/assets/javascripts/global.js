@@ -28,9 +28,9 @@ $(document).ready(function() {
 
   $('[class$=-item]').each(function() {
     var item = $(this);
-    var type = $(this).data('server') ? 'server' : 'site';
+    var type = item.data('server') ? 'server' : 'site';
 
-    $.get("/" + type + "/" + $(this).data(type) + "/view-type/" + $(this).data('view-type'), function(data) {
+    $.get("/" + type + "/" + item.data(type) + "/view-type/" + item.data('view-type'), function(data) {
       item.css('text-align', 'left');
       item.hide().html(data).fadeIn('fast');
     }, "html");

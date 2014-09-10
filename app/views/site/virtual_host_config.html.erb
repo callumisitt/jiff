@@ -1,17 +1,17 @@
 <%= render 'site_sidebar' %>
 
-<div class="small-12 medium-9 columns">
+<div class="small-12 large-9 columns">
   <div class="panel">
     <%= render 'site_links', site: @site %>
     
-    <% if @sudo_password || @pwd_not_needed %>
+    <% if @password %>
       <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
         <%= f.input :input, label: false, as: :text, input_html: { value: @site.virtual_host_config, data: {codemirror: true} } %>
-        <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @pwd_not_needed %>
+        <%= f.input :password, as: :hidden, input_html: { value: params[:site][:password] } unless @pwd_not_needed %>
         <%= f.button :submit, 'Update Config' %>
       <% end %>
     <% else %>
-      <%= render 'sudo_form', item: @server, url: virtual_host_config_server_site_path(@server, @site) %>
+      <%= render 'sudo_form', item: @site, url: virtual_host_config_server_site_path(@server, @site) %>
     <% end %>
   </div>
 </div>

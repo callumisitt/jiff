@@ -1,6 +1,6 @@
 class SiteController < ApplicationController
   before_action :site, if: -> { params[:id] }
-  before_action -> { authenticate_sudo params.fetch(:server, {}).fetch(:password, nil) }, only: [:toggle, :virtual_host_config]
+  before_action -> { authenticate_sudo params.fetch(:site, {}).fetch(:password, nil) }, only: [:toggle, :virtual_host_config]
 
   def index
     @server = Server.find(params[:server_id])
@@ -15,7 +15,7 @@ class SiteController < ApplicationController
   end
   
   def toggle
-    if @sudo_password
+    if @password
       state = params[:site][:toggle].to_i if params[:site]
       state ||= 0
       @site.toggle state
@@ -28,7 +28,7 @@ class SiteController < ApplicationController
   end
   
   def virtual_host_config
-    @site.virtual_host_config(params[:site][:input]) if params[:site] && @sudo_password
+    @site.virtual_host_config(params[:site][:input]) if params[:site] && @password
   end
   
   def rake_task

@@ -7,18 +7,18 @@ module SSH
     attr_accessor :pwd, :input, :output
   end
   
-  def file(file, contents = nil)
-    if contents
-      sudo_ssh { execute "printf #{contents.shell} | sudo tee #{file}", sanitize: false }
+  def file(file, content = nil)
+    if content
+      sudo_ssh { execute "printf #{content.shell} | sudo tee #{file}", sanitize: false }
     else
       sudo_ssh { capture :cat, file }
     end
   end
 
-  def log_file(file)
-  	sudo_ssh options = { output: true } do
-  		capture :tail, '-f', '-n', '250', file
-  	end
+  def log_file(file, sudo = true)
+    options = { output: true }
+    method = sudo ? 'sudo_ssh' : 'ssh'
+    self.send(method, options) { capture :tail, '-f', '-n', '250', file }
   end
   
   def sudo_ssh(options = { }, &block)
