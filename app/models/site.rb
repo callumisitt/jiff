@@ -37,9 +37,9 @@ class Site < ActiveRecord::Base
   end
   
   def virtual_host_config(content = nil)
-    puts "PWD: #{server.pwd}"
-    puts "CONTENT: #{content}"
-    file "/etc/apache2/sites-available/#{server_ref}*", content
+    config = file "/etc/apache2/sites-available/#{server_ref}*", content
+    server.reload_apache if content
+    config
   end
   
   def server_response

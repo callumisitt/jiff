@@ -21,6 +21,10 @@ module SSH
     self.send(method, options) { capture :tail, '-f', '-n', '250', file }
   end
   
+  def send_message(message, server_id)
+    $redis.publish("server_#{server_id}.output", message.to_json)
+  end
+  
   def sudo_ssh(options = { }, &block)
     ssh options = options do
       as :root do
@@ -40,6 +44,7 @@ module SSH
         command = instance_eval &block
       end
     end
+    send_message('%END%', server.id)
     command
   end
 end

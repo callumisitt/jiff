@@ -1,4 +1,5 @@
 function submit_form(form) {
+	$('.spinner.small').css('display', 'inline-block');
 	form.find('textarea.output').val('');
   form.submit();
 }
@@ -9,7 +10,6 @@ $(document).ready(function() {
 	}
 
   $('*[data-submit]').click(function(e) {
-  	e.preventDefault();
   	submit_form($(this).closest("form"));
   });
 
@@ -45,13 +45,19 @@ $(document).ready(function() {
   // stream output from server
 
   var server = $('body').data('server');
-  if (server != null) {
+  if (server != null && $('textarea.output').length) {
     var source = new EventSource('/server/' + server + '/output');
+		source.addEventListener('heartbeat', function(e) { return e; });
     source.addEventListener('server_' + server + '.output', function(e) {
     	var response = $.parseJSON(e.data);
       var output = $('textarea.output');
-      output.val(output.val() + response);
-      output.scrollTop(output[0].scrollHeight - output.height());
+			
+			if(response == '%END%') {
+				$('.spinner.small').hide();
+			} else {
+	      output.val(output.val() + response);
+	      output.scrollTop(output[0].scrollHeight - output.height());
+			}
     });
 		$(window).bind('beforeunload', function(){
 		  source.close();

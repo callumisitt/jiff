@@ -11,6 +11,7 @@
      		</div>
      		<div class="medium-8 columns">
      			<%= f.button :submit, 'Run Task', 'data-submit' => :true %>
+          <div class="spinner small"></div>
      		</div>
      	</div>
       <%= f.input :output, label: 'Output', as: :text, disabled: true, input_html: { class: 'output', rows: 40 } %>

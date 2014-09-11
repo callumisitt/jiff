@@ -69,9 +69,9 @@ class Server < ActiveRecord::Base
   # edits
     
   def apache_config(content = nil)
-    apache_config = file '/etc/apache2/apache2.conf', content
+    config = file '/etc/apache2/apache2.conf', content
     reload_apache if content
-    apache_config
+    config
   end
   
   # general
