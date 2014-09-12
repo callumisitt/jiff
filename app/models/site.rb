@@ -5,6 +5,8 @@ class Site < ActiveRecord::Base
   
   delegate :user, :address, to: :server
   
+  attr_reader :password
+  
   def enabled?
     enabled = ssh { capture :ls, '/etc/apache2/sites-enabled' }
     enabled.try(:include?, "#{server_ref}")

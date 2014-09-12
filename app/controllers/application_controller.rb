@@ -4,7 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   rescue_from SSHKit::Runner::ExecuteError do |exception|
-    redirect_to :back, alert: exception.to_s.lines.last
+    message = 'Unfortunately, there was an error.' if exception.to_s.include? 'stderr: Nothing written'
+    message ||= exception.to_s.lines.last
+    flash.now[:alert] = message
+    render params[:action]
   end
   
   before_action :authenticate_admin_user!
@@ -12,14 +15,17 @@ class ApplicationController < ActionController::Base
 
   def authenticate_sudo(password)
     if password
-      @sudo_password = false
-      
-    	if @server.authenticate(password)
+     	if @server.authenticate(password)
 	      @server.pwd = password
 	      @sudo_password = true
 	    else
         flash.delete(:alert)
-	    	flash[:alert] = 'Sorry, try again.'
+        if request.format == :js
+          flash.now[:alert] = 'Sorry, try again.'
+          return false
+        else
+          flash[:alert] = 'Sorry, try again.'
+        end
 	    end
     elsif @server.password_digest.nil?
       @pwd_not_needed = true

@@ -2,7 +2,7 @@ class ServerController < ApplicationController
   include Stream
   
   before_action :server, except: [:output], if: -> { params[:id] }
-  before_action -> { authenticate_sudo params.fetch(:server, {}).fetch(:password, nil) }, only: [:apache_config, :view_log]
+  before_action -> { authenticate_sudo params[:server].try(:fetch, :password, nil) }, only: [:apache_config, :view_log]
   
   newrelic_ignore only: [:output]
 

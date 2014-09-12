@@ -9,9 +9,11 @@
       <span class="status <%= site.uptime(:status).to_i.to_words if site.uptime(:status) %>"></span><%= link_to site.name, server_site_path(server, site) %>
       <%= simple_form_for site, url: toggle_server_site_path(@server, site), remote: true do |f| %>
         <div class="switch small">
-          <input id="site-toggle-<%= site.id %>" name="site[toggle]" type="checkbox" value="1" data-submit <%= 'checked' if site.enabled? %>>
+          <% sudo = @pwd_not_needed ? nil : "data-sudo=#{site.id}" %>
+          <input id="site-toggle-<%= site.id %>" name="site[toggle]" type="checkbox" value="1" data-submit <%= sudo %> <%= 'checked' if site.enabled? %>>
           <label for="site-toggle-<%= site.id %>"></label>
-        </div> 
+        </div>
+        <%= f.input :password, as: :hidden, input_html: { class: 'password' } unless @pwd_not_needed %>
       <% end %>
       <%= render 'site_actions', site: site %>
     </div>

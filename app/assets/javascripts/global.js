@@ -1,31 +1,46 @@
-function submit_form(form) {
+function submit_form(caller, form) {
 	$('.spinner.small').css('display', 'inline-block');
 	form.find('textarea.output').val('');
-  form.submit();
+	
+	var id;
+	if (id = caller.attr('data-sudo')) {
+ 		$('#sudo-hidden').foundation('reveal', 'open');
+		$('.sudo-form').submit(function(sudo_form) {
+			sudo_form.preventDefault();
+			var pwd = $(this).find('input.password').val();
+			$('#sudo-hidden').foundation('reveal', 'close');
+			form.find('input.password').val(pwd);
+			
+			$('#message').empty();
+			$(this).unbind('submit'); // prevents submitting multiple times on error
+			form.submit();
+		});
+	} else {
+	 form.submit();
+	}
 }
 
 $(document).ready(function() {
 	if ( $(".ajax.output").length > 0 ) {
-		submit_form($(".ajax.output").closest("form"));
+		submit_form($(".ajax.output").closest('form'));
 	}
 
   $('*[data-submit]').click(function(e) {
-  	submit_form($(this).closest("form"));
+  	submit_form($(this), $(this).closest('form'));
   });
 
   $('*[data-option-submit]').change(function() {
-    submit_form($(this).closest("form"));
+    submit_form($(this), $(this).closest('form'));
   });
   
   $("textarea[data-codemirror]").each(function() {
     CodeMirror.fromTextArea($(this).get(0), {
       lineNumbers: true,
-      mode: "text/x-sh"
+      mode: 'text/x-sh'
     });
   });
   
   // load server/site item without blocking page load
-
   $('[class$=-item]').each(function() {
     var item = $(this);
     var type = item.data('server') ? 'server' : 'site';
@@ -40,10 +55,9 @@ $(document).ready(function() {
     $(this).scrollTop($(this)[0].scrollHeight);
   });
   
-  $('#sudo').foundation('reveal', 'open');
+  $('.sudo').foundation('reveal', 'open');
   
   // stream output from server
-
   var server = $('body').data('server');
   if (server != null && $('textarea.output').length) {
     var source = new EventSource('/server/' + server + '/output');

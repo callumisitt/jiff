@@ -5,10 +5,12 @@
   </div>
 <% end %>
 
-<div id="sudo" class="reveal-modal tiny" data-reveal>
+<% type = defined?(hidden) ? 'sudo-hidden' : 'sudo' %>
+
+<div id="<%= type %>" class="<%= type %> reveal-modal tiny" data-reveal>
 	<%= render 'message' %>
 
-  <%= simple_form_for item, url: url do |f| %>
+  <%= simple_form_for item, url: url, html: { class: 'sudo-form' } do |f| %>
     <%= f.input :password, label: false, placeholder: 'Sudo password needed...', as: :password, input_html: { autofocus: true } %>
     <%= f.button :submit, 'Set Password' %>
   <% end %> 

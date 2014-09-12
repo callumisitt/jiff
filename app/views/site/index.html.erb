@@ -11,5 +11,6 @@
   			</li>
   		<% end %>
   	</ul>
+    <%= render 'sudo_form', item: @server, url: server_site_index_path(@server), hidden: true unless @pwd_not_needed %>
   </div>
 </div>

@@ -59,11 +59,11 @@ class Server < ActiveRecord::Base
   end
   
   def reload_apache
-    sudo_ssh { execute :service, 'apache2', 'graceful' }
+    sudo_ssh { execute :apache2ctl, 'graceful' }
   end
   
   def restart_apache
-    sudo_ssh { execute :service, 'apache2', 'restart' }
+    sudo_ssh { execute :apache2ctl, 'restart' }
   end
   
   # edits

@@ -1,0 +1,7 @@
+<%= render partial: 'message.js' %>
+
+<% unless @password %>
+	$("#site-toggle-<%= @site.id %>").prop('checked', function(i, val) {
+	  return !val;
+	});
+<% end %>
