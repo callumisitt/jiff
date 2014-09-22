@@ -15,8 +15,6 @@ set :deploy_to, '/home/rails/jiff'
 set :repository, 'git@github.com:WhiteAgency/Jiff.git'
 set :branch, 'develop'
 
-set :rails_env, 'development'
-
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
 set :shared_paths, ['config/database.yml', 'log', 'public/system']
