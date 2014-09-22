@@ -8,7 +8,7 @@ Install the gems through bundler as usual and then ensure Vagrant is set up.
 
 ### Setting up Vagrant
 
-1. Install Vagrant (https://www.vagrantup.com/downloads.html) and VirtualBox (https://www.virtualbox.org/wiki/Downloads)
+1. Install Vagrant (https://www.vagrantup.com/downloads.html) and VirtualBox (https://www.virtualbox.org/wiki/Downloads).
 2. Install the following Vagrant plugins:
 
 	```
@@ -16,7 +16,7 @@ Install the gems through bundler as usual and then ensure Vagrant is set up.
 	vagrant plugin install vagrant-librarian-chef
 	```
 
-3. Insert the following into ~/.ssh/config
+3. Insert the following into `~/.ssh/config`
 
 	```
 	Host default
