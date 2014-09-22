@@ -22,7 +22,7 @@ function submit_form(caller, form) {
 
 $(document).ready(function() {
 	if ( $(".ajax.output").length > 0 ) {
-		submit_form($(".ajax.output").closest('form'));
+		submit_form($(".ajax.output"), $(".ajax.output").closest('form'));
 	}
 
   $('*[data-submit]').click(function(e) {
