@@ -34,7 +34,7 @@
   
   <% if @latest_commit %>
     <p><strong>Latest Commit</strong><br>
-      &raquo; <%= link_to @latest_commit['commit']['message'], @latest_commit['html_url'], target: '_blank' %> <br><small><%= @latest_commit['commit']['committer']['name'] %> - <%= @latest_commit['commit']['committer']['date'].gsub!(/[^\d-:]/, ' ') %> </small>
+      &raquo; <%= link_to @latest_commit['commit']['message'], @latest_commit['html_url'], target: '_blank' %> <br><small><%= @latest_commit['commit']['committer']['name'] %> - <%= @latest_commit['commit']['committer']['date'].gsub!(/[^-:\d]/, ' ') %> </small>
     </p>
   <% end %>
     
