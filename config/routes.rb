@@ -12,14 +12,14 @@ Rails.application.routes.draw do
       end
     end
     member do
-      match 'apache-config', via: [:get, :post, :patch]
+      match 'config/:file', via: [:get, :post, :patch], action: :config_file, as: :config_file, constraints: ->(request) { Server::LOCATIONS.has_key? request.params[:file].downcase }
       match 'view-log', via: [:get, :patch]
       get 'output'
       get 'status'
     end
   end
   
-  get "/server/:id/view-type/:view_type" => "server#show"
-  get "/server/:id/:command" => "server#command", as: "command_server"
-  get "/server/:server_id/site/:id/:command" => "site#command", as: "command_site"
+  get "/server/:id/view-type/:view_type" => 'server#show'
+  get "/server/:id/:command" => 'server#command', as: 'command_server'
+  get "/server/:server_id/site/:id/:command" => 'site#command', as: 'command_site'
 end

@@ -45,18 +45,6 @@ main
 .management-menu
 {
   margin-bottom: 20px;
-  background-color: #444;
-  .top-bar-section ul 
-  {
-    li, li:not(.has-form) a:not(.button):not(.active)
-    {
-      background-color: #444;
-      &:hover
-      {
-        background-color: #373737;
-      }
-    }
-  }
 }
 
 .CodeMirror

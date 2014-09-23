@@ -1,8 +1,8 @@
 class ServerController < ApplicationController
   include Stream
   
-  before_action :server, except: [:output], if: -> { params[:id] }
-  before_action -> { authenticate_sudo params[:server].try(:fetch, :password, nil) }, only: [:apache_config, :view_log]
+  before_action :server_init, except: [:output], if: -> { params[:id] }
+  before_action -> { authenticate_sudo params[:server].try(:fetch, :password, nil) }, only: [:config_file, :view_log]
   
   newrelic_ignore only: [:output]
 
@@ -15,13 +15,14 @@ class ServerController < ApplicationController
     end
   end
   
-  def apache_config
-    @server.apache_config(params[:server][:input]) if params[:server] && @password
+  def config_file
+    @file = params[:file]
+    @server.config(@file, params[:server][:input]) if params[:server] && @password
   end
 
   def view_log
-  	if params[:server] && params[:server][:log]
-	  	@file = params[:server][:log] 
+    if params[:server] && params[:server][:log] && @password
+	    @file = params[:server][:log]
 	  	@server_log = @server.log_file(@file)
 	  end
   end
@@ -36,7 +37,7 @@ class ServerController < ApplicationController
   
   private
   
-  def server
+  def server_init
     @server = Server.find(params[:id])
     @status = @server.status
   end

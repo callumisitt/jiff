@@ -8,6 +8,7 @@ class Server < ActiveRecord::Base
   attr_reader :log
   
   COMMANDS = %w[restart reload_apache restart_apache]
+  LOCATIONS = {'apache' => '/etc/apache2/apache2.conf', 'varnish' => '/etc/varnish/default.vcl'}
   
   # info
   
@@ -66,11 +67,28 @@ class Server < ActiveRecord::Base
     sudo_ssh { execute :apache2ctl, 'restart' }
   end
   
+  def check_varnish
+    sudo_ssh { execute :varnishd, '-C', '-f', LOCATIONS['varnish'] }
+  end
+  
+  def reload_varnish
+    sudo_ssh { execute '/etc/init.d/varnish', 'reload' }
+  end
+  
   # edits
+  
+  def apache_edit
+    reload_apache
+  end
+  
+  def varnish_edit
+    check_varnish
+    reload_varnish
+  end
     
-  def apache_config(content = nil)
-    config = file '/etc/apache2/apache2.conf', content
-    reload_apache if content
+  def config(config_file, content = nil)
+    config = file LOCATIONS[config_file], content
+    send "#{config_file}_edit" if content
     config
   end
   

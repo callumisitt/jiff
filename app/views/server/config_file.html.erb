@@ -5,13 +5,13 @@
     <%= render 'server_links', server: @server %>
 
     <% if @password %>
-      <%= simple_form_for @server, url: apache_config_server_path(@server) do |f| %>
-        <%= f.input :input, label: false, as: :text, input_html: { value: @server.apache_config, data: {codemirror: true} } %>
+      <%= simple_form_for @server, url: config_file_server_path(@server, @file) do |f| %>
+        <%= f.input :input, label: false, as: :text, input_html: { value: @server.config(@file), data: {codemirror: true} } %>
         <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @pwd_not_needed %>
         <%= f.button :submit, 'Update Config' %>
       <% end %>
     <% else %>
-      <%= render 'sudo_form', item: @server, url: apache_config_server_path(@server) %>
+      <%= render 'sudo_form', item: @server, url: config_file_server_path(@server, @file) %>
     <% end %>
   </div>
 </div>

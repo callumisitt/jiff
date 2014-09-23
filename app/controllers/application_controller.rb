@@ -3,15 +3,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  rescue_from SSHKit::Runner::ExecuteError do |exception|
-    message = 'Unfortunately, there was an error.' if exception.to_s.include? 'stderr: Nothing written'
-    message ||= exception.to_s.lines.last
-    flash.now[:alert] = message
-    render params[:action]
-  end
+  rescue_from SSHKit::Runner::ExecuteError, with: ->(exception) { ssh_error(exception) }
   
   before_action :authenticate_admin_user!
-  before_action :set_defaults
+  before_action :init
 
   def authenticate_sudo(password)
     if password
@@ -36,7 +31,24 @@ class ApplicationController < ActionController::Base
   
   private
 
-  def set_defaults
+  def init
     @servers = Server.all
+    @parent_path = case params[:controller]
+    when 'server'
+      server_path(params[:id])
+    when 'site'
+      params[:id] ? server_site_path(params[:server_id], params[:id]) : server_site_index_path(params[:server_id])
+    else
+      root_path
+    end
+  end
+  
+  def ssh_error(exception)
+    message = 'Unfortunately, there was an error.' if exception.to_s.include? 'stderr: Nothing written'
+    message ||= exception.to_s.lines.last
+    flash.now[:alert] = message
+    render params[:action]
+  rescue
+    redirect_to @parent_path, alert: message
   end
 end

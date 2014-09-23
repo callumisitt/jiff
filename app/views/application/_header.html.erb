@@ -11,7 +11,7 @@
       <li><%= link_to 'Dashboard', root_path, active_on: root_path %></li>
       <% if @server %>
         <li class="has-dropdown">
-          <%= link_to 'Sites', server_site_index_path(@server), active_on: /\/server\/\d\/site\/(.*)/i %>
+          <%= link_to 'Sites', server_site_index_path(@server), active_on: /\/server\/\d\/site\/.*/i %>
           <ul class="dropdown">
             <% @server.sites.each do |site| %>
               <li><%= link_to site.name, server_site_path(@server, site) %></li>
@@ -20,7 +20,7 @@
         </li>
       <% end %>
       <li class="has-dropdown">
-        <%= link_to 'Servers', server_index_path, active_on: /\/server\/\d\/(site|.[^\/]*)\z/i %>
+        <%= link_to 'Servers', server_index_path, active_on: /\/server\/\d\/(site\z|(?!site).*)/i %>
         <ul class="dropdown">
           <% @servers.each do |server| %>
             <li><%= link_to server.name, server_path(server) %></li>

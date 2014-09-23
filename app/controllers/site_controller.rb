@@ -1,5 +1,5 @@
 class SiteController < ApplicationController
-  before_action :site, if: -> { params[:id] }
+  before_action :site_init, if: -> { params[:id] }
   before_action -> { authenticate_sudo params[:site].try(:fetch, :password, nil) }, only: [:toggle, :virtual_host_config]
 
   def index
@@ -37,7 +37,7 @@ class SiteController < ApplicationController
   
   private
   
-  def site
+  def site_init
     @site = Site.find(params[:id])
     @online_status = @site.uptime(:status).to_i
     @latest_commit = @site.latest_commit

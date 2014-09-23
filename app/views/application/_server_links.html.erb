@@ -3,8 +3,14 @@
     <ul class="left">
       <li><%= link_to "Sites", server_site_index_path(server), active_on: true %></li>
       <li><%= link_to "Status", status_server_path(server), active_on: true %></li>
-      <li><%= link_to "View Logs", view_log_server_path(server), active_on: true %></li>   
-      <li><%= link_to "Apache Config", apache_config_server_path(server), active_on: true %></li>
+      <li><%= link_to "View Logs", view_log_server_path(server), active_on: true %></li>
+      <li class="has-dropdown">
+        <%= link_to "Config Files", '#', active_on: /.*\/config\/.*/ %>
+        <ul class="dropdown">
+          <%= link_to 'Apache Config', config_file_server_path(server, 'apache'), active_on: true, active_wrapper: :li %>
+          <%= link_to 'Varnish Config', config_file_server_path(server, 'varnish'), active_on: true, active_wrapper: :li %>
+        </ul>
+      </li>
       <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
 		<ul class="right">
