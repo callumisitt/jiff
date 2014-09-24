@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         match 'toggle', via: [:get, :patch]
         match 'virtual-host-config', via: [:get, :patch]
         match 'rake-task', via: [:get, :patch]
+        match ':command', action: :command, as: :command, via: [:get, :patch]
       end
     end
     member do
@@ -16,10 +17,7 @@ Rails.application.routes.draw do
       match 'view-log', via: [:get, :patch]
       get 'output'
       get 'status'
+      match ':command', action: :command, as: :command, via: [:get, :patch], constraints: ->(request) { Server::COMMANDS.include? request.params[:command].downcase }
     end
   end
-  
-  get "/server/:id/view-type/:view_type" => 'server#show'
-  get "/server/:id/:command" => 'server#command', as: 'command_server'
-  get "/server/:server_id/site/:id/:command" => 'site#command', as: 'command_site'
 end

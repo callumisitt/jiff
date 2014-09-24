@@ -8,6 +8,18 @@ main
   margin-top: 2em;
 }
 
+.full-width
+{
+  width: 100%;
+}
+
+.CodeMirror
+{
+  margin: 10px 0;
+  height: 700px;
+  border: 1px solid #e3e3e3;
+}
+
 .panel
 {
   border-radius: 3px;
@@ -47,21 +59,29 @@ main
   margin-bottom: 20px;
 }
 
-.CodeMirror
-{
-  margin: 10px 0;
-  height: 700px;
-  border: 1px solid #e3e3e3;
-}
-
 div.switch label
 {
   margin-top: 1em;
 }
 
-.f-dropdown:before, .f-dropdown:after
+.button-group
 {
-  display: none;
+	&.stack li
+	{
+		margin-bottom: 10px;
+	}
+}
+
+.f-dropdown 
+{
+	&:before, &:after
+	{
+		display: none;
+	}
+	.button-group li:hover
+	{
+		background: none;
+	}
 }
 
 div.input input
@@ -72,4 +92,10 @@ div.input input
 .reveal-modal .close-reveal-modal
 {
   line-height: 24px;
+}
+
+.inline-list li
+{
+	display: inline-block;
+	float: none;
 }

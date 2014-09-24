@@ -7,24 +7,7 @@ class Site < ActiveRecord::Base
   
   attr_reader :password
   
-  def enabled?
-    enabled = ssh { capture :ls, '/etc/apache2/sites-enabled' }
-    enabled.try(:include?, "#{server_ref}")
-  end
-  
-  def toggle(state)
-    command = state == 1 ? :a2ensite : :a2dissite
-    sudo_ssh { execute command, @site.server_ref }
-    server.reload_apache
-  end
-  
-  def restart
-    ssh do
-      within "#{@site.server_ref}/current/tmp" do
-        execute :touch, 'restart.txt'
-      end
-    end
-  end
+  COMMANDS = %w[restart]
   
   def rake(task)
     ssh options = { output: true } do
@@ -44,6 +27,24 @@ class Site < ActiveRecord::Base
     config
   end
   
+  # commands
+   
+  def toggle(state)
+    command = state == 1 ? :a2ensite : :a2dissite
+    sudo_ssh { execute command, @site.server_ref }
+    server.reload_apache
+  end
+  
+  def restart
+    ssh do
+      within "#{@site.server_ref}/current/tmp" do
+        execute :touch, 'restart.txt'
+      end
+    end
+  end
+  
+  # general
+  
   def server_response
     http = Net::HTTP.new(url.remove('http://'))
     site = Net::HTTP::Get.new('/')
@@ -56,6 +57,11 @@ class Site < ActiveRecord::Base
   
   def latest_commit
     github.latest_commit
+  end
+  
+  def enabled?
+    enabled = ssh { capture :ls, '/etc/apache2/sites-enabled' }
+    enabled.try(:include?, "#{server_ref}")
   end
   
   def ssh(options = { }, &block)

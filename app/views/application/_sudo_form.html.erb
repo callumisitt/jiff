@@ -11,7 +11,7 @@
 	<%= render 'message' %>
 
   <%= simple_form_for item, url: url, html: { class: 'sudo-form' } do |f| %>
-    <%= f.input :password, label: false, placeholder: 'Sudo password needed...', as: :password, input_html: { autofocus: true } %>
+    <%= f.input :password, label: false, placeholder: 'Sudo password needed...', as: :password, autofocus: true %>
     <%= f.button :submit, 'Set Password' %>
   <% end %> 
 </div>

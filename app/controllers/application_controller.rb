@@ -46,6 +46,7 @@ class ApplicationController < ActionController::Base
   def ssh_error(exception)
     message = 'Unfortunately, there was an error.' if exception.to_s.include? 'stderr: Nothing written'
     message ||= exception.to_s.lines.last
+    puts message
     flash.now[:alert] = message
     render params[:action]
   rescue
