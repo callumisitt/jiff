@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
   devise_for :admin_users
+  
   root 'dashboard#index'
 
   resources :server do

@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     when 'site'
       params[:id] ? server_site_path(params[:server_id], params[:id]) : server_site_index_path(params[:server_id])
     else
-      root_path
+      root_path unless params[:controller] == 'rails_admin/main'
     end
   end
   

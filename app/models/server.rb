@@ -108,7 +108,7 @@ class Server < ActiveRecord::Base
   def ssh(options = { }, &block)
     super(self, nil, options)
   end
-
+  
   private
   
   def new_relic

@@ -8,6 +8,11 @@
 
   <section class="top-bar-section">
     <ul class="right">
+      <li>
+        <%= link_to destroy_admin_user_session_path, method: :delete do %>
+          <span data-tooltip title="Click to logout">Logged in as: <%= current_admin_user.username %></span></a>
+        <% end if admin_user_signed_in? %>
+      </li>
       <li><%= link_to 'Dashboard', root_path, active_on: root_path %></li>
       <% if @server %>
         <li class="has-dropdown">
@@ -15,18 +20,19 @@
           <ul class="dropdown">
             <% @server.sites.each do |site| %>
               <li><%= link_to site.name, server_site_path(@server, site) %></li>
-            <% end %>
+            <% end if admin_user_signed_in? %>
           </ul>
         </li>
       <% end %>
       <li class="has-dropdown">
-        <%= link_to 'Servers', server_index_path, active_on: /\/server\/\d\/(site\z|(?!site).*)/i %>
+        <%= link_to 'Servers', '#', active_on: /\/server\/\d\/(site\z|(?!site).*)/i %>
         <ul class="dropdown">
           <% @servers.each do |server| %>
             <li><%= link_to server.name, server_path(server) %></li>
-          <% end %>
+          <% end if admin_user_signed_in? %>
         </ul>
       </li>
+      <li><%= link_to 'Manage', rails_admin_path %></li>
     </ul>
   </section>
 </nav>

@@ -7,6 +7,8 @@ gem 'redis'
 
 gem 'devise'
 
+gem 'rails_admin'
+
 gem 'httparty'
 gem 'sshkit'
 
