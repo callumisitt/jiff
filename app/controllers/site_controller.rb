@@ -5,6 +5,7 @@ class SiteController < ApplicationController
   def index
     @server = Server.find(params[:server_id])
     @sites = @server.sites
+    @current_server = ServerPresenter.new(@server, request)
   end
   
   def command
@@ -17,6 +18,8 @@ class SiteController < ApplicationController
       state = params[:site][:toggle].to_i if submission?
       state ||= 0
       @site.toggle state
+    else
+      false
     end
   end
   
@@ -38,13 +41,7 @@ class SiteController < ApplicationController
   
   def site_init
     @site = Site.find(params[:id])
-    @online_status = @site.uptime(:status).to_i
-    @latest_commit = @site.latest_commit
     @server = @site.server
-    @pwd_not_needed = true unless @server.password_digest
-  end
-  
-  def submission?
-    params[:site] && @password
+    @current_site = SitePresenter.new(@site, @server)
   end
 end

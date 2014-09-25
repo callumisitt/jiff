@@ -8,8 +8,8 @@ class ServerPresenter
     URI(@request.referer).path == '/' ? 6 : 12
   end
   
-  def pwd_not_needed
-    true unless @server.password_digest
+  def sudo
+    @server.pwd_not_needed ? nil : "data-sudo=#{@server.id}"
   end
   
   def commands

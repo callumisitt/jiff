@@ -1,0 +1,10 @@
+<%= render partial: 'message.js' %>
+
+<% if @password %>
+	<% if params[:command] == 'check_upgrades' %>
+		$('#upgrades').html('<p></p>');
+		<% @command_output.each do |package| %>
+			$('#upgrades p').append("<%=j parse_package(package) %>");
+		<% end %>
+	<% end %>
+<% end %>

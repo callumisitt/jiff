@@ -5,9 +5,11 @@ class Server < ActiveRecord::Base
   
   has_secure_password validations: false
 
+  default_scope -> { order(:name) }
+
   attr_reader :log
   
-  COMMANDS = %w[restart reload_apache restart_apache]
+  COMMANDS = %w[check_upgrades restart reload_apache restart_apache]
   LOCATIONS = {'apache' => '/etc/apache2/apache2.conf', 'varnish' => '/etc/varnish/default.vcl'}
   
   # info
@@ -21,7 +23,8 @@ class Server < ActiveRecord::Base
   end
   
   def ip
-    ssh { capture :hostname, '-I' }
+    ip = ssh { capture :hostname, '-I' }
+    ip.split.first
   end
   
   def hostname
@@ -54,6 +57,13 @@ class Server < ActiveRecord::Base
   end
   
   # commands
+  
+  def check_upgrades
+    upgrades = sudo_ssh options = { output: true } do
+      capture 'apt-get', '-s', :upgrade
+    end
+    upgrades.scan(/Inst(.[^\]]*)/).map { |u| u[0].strip.remove('[') }
+  end
   
   def restart
     sudo_ssh { execute :reboot }
@@ -99,6 +109,10 @@ class Server < ActiveRecord::Base
     hostname ? 2 : 9
   rescue
     return 9
+  end
+  
+  def pwd_not_needed
+    true unless password_digest
   end
   
   def to_s

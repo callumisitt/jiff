@@ -1,4 +1,9 @@
 <nav class="top-bar management-menu" data-topbar>
+  <ul class="title-area">
+    <li class="name"></li>
+    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+  </ul>
+  
   <section class="top-bar-section">
     <ul class="left">
       <li><%= link_to "Sites", server_site_index_path(server), active_on: true %></li>
@@ -11,10 +16,9 @@
           <%= link_to 'Varnish Config', config_file_server_path(server, 'varnish'), active_on: true, active_wrapper: :li %>
         </ul>
       </li>
-      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
 		<ul class="right">
-			<li><% cache("#{server.name.to_slug}_ip") do %><%= link_to "http://#{server.ip}", target: '_blank' do %><%= image_tag 'icons/globe.png' %> <%= server.ip %><% end %><% end %></li>
+			<li><% cache("#{server.name.to_slug}_ip") do %><%= link_to "http://#{server.hostname}", target: '_blank' do %><%= image_tag 'icons/globe.png' %> <%= server.hostname %> / <%= server.ip %><% end %><% end %></li>
 		</ul>
   </section>
 </nav>

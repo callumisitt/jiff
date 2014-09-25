@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  rescue_from SSHKit::Runner::ExecuteError, with: ->(exception) { ssh_error(exception) }
+  # rescue_from SSHKit::Runner::ExecuteError, with: ->(exception) { ssh_error(exception) }
   
   before_action :authenticate_admin_user!
   before_action :init
@@ -33,7 +33,8 @@ class ApplicationController < ActionController::Base
 
   def init
     @servers = Server.all
-    @parent_path = case params[:controller]
+    @controller = params[:controller]
+    @parent_path = case @controller
     when 'server'
       server_path(params[:id])
     when 'site'
@@ -51,5 +52,9 @@ class ApplicationController < ActionController::Base
     render params[:action]
   rescue
     redirect_to @parent_path, alert: message
+  end
+  
+  def submission?
+    params[@controller.to_sym] && @password
   end
 end

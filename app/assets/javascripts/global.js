@@ -4,20 +4,45 @@ function submit_form(caller, form) {
 	
 	var id;
 	if (id = caller.attr('data-sudo')) {
- 		$('#sudo-hidden').foundation('reveal', 'open');
-		$('.sudo-form').submit(function(sudo_form) {
-			sudo_form.preventDefault();
-			var pwd = $(this).find('input.password').val();
-			$('#sudo-hidden').foundation('reveal', 'close');
-			form.find('input.password').val(pwd);
-			
-			$('#message').empty();
-			$(this).unbind('submit'); // prevents submitting multiple times on error
-			form.submit();
-		});
+ 		handle_sudo(caller, form);
 	} else {
 	 form.submit();
 	}	
+}
+
+function handle_sudo(caller, form) {
+	$('#sudo-hidden').foundation('reveal', 'open');
+	
+	$('.sudo-form').submit(function(sudo_form) {
+		sudo_form.preventDefault();
+		$('#message').empty();
+		$('#sudo-hidden').foundation('reveal', 'close');
+		
+		var pwd = $(this).find('input.password').val();
+		form.find('input.password').val(pwd);
+		
+		$(this).unbind('submit'); // prevents submitting multiple times on error
+		form.submit();
+	});
+}
+
+function stream(server) {
+  var source = new EventSource('/server/' + server + '/output');
+	source.addEventListener('heartbeat', function(e) { return e; });
+  source.addEventListener('server_' + server + '.output', function(e) {
+  	var response = $.parseJSON(e.data);
+    var output = $('textarea.output');
+		
+		if(response == '%END%') {
+			$('.spinner.small').hide();
+		} else {
+      output.val(output.val() + response);
+      output.scrollTop(output[0].scrollHeight - output.height());
+		}
+  });
+	$(window).bind('beforeunload', function(){
+	  source.close();
+	});
 }
 
 $(document).ready(function() {
@@ -61,25 +86,10 @@ $(document).ready(function() {
 	$(document).on('opened', '[data-reveal]', function () {
 	  $("[id$=password]").first().focus();
 	});
-  
+	  
   // stream output from server
   if (server != null && $('textarea.output').length) {
-    var source = new EventSource('/server/' + server + '/output');
-		source.addEventListener('heartbeat', function(e) { return e; });
-    source.addEventListener('server_' + server + '.output', function(e) {
-    	var response = $.parseJSON(e.data);
-      var output = $('textarea.output');
-			
-			if(response == '%END%') {
-				$('.spinner.small').hide();
-			} else {
-	      output.val(output.val() + response);
-	      output.scrollTop(output[0].scrollHeight - output.height());
-			}
-    });
-		$(window).bind('beforeunload', function(){
-		  source.close();
-		});
-  }
+		stream(server);
+	}
   
 });

@@ -26,8 +26,11 @@ class ServerController < ApplicationController
   end
   
   def command
-    @server.send(params[:command])
-    render nothing: true
+    @command_output = @server.send(params[:command])
+    respond_to do |format|
+      format.js { }
+      format.all { render nothing: true }
+    end
   end
   
   def status; end
@@ -37,9 +40,5 @@ class ServerController < ApplicationController
   def server_init
     @server = Server.find(params[:id])
     @current_server = ServerPresenter.new(@server, request)
-  end
-  
-  def submission?
-    params[:server] && @password
   end
 end

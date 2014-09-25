@@ -5,16 +5,19 @@
     <div class="medium-6 columns">
       <%= image_tag "http://img.bitpixels.com/getthumbnail?code=18452&size=200&url=#{site.url}", class: 'border' %>
     </div>
+    
     <div class="medium-6 columns">
       <span class="status <%= site.uptime(:status).to_i.to_words if site.uptime(:status) %>"></span><%= link_to site.name, server_site_path(server, site) %>
+      
       <%= simple_form_for site, url: toggle_server_site_path(@server, site), remote: true do |f| %>
         <div class="switch small">
-          <% sudo = @pwd_not_needed ? nil : "data-sudo=#{site.id}" %>
+          <% sudo = site.pwd_not_needed ? nil : "data-sudo=#{site.id}" %>
           <input id="site-toggle-<%= site.id %>" name="site[toggle]" type="checkbox" value="1" data-submit <%= sudo %> <%= 'checked' if site.enabled? %>>
           <label for="site-toggle-<%= site.id %>"></label>
         </div>
-        <%= f.input :password, as: :hidden, input_html: { class: 'password' } unless @pwd_not_needed %>
+        <%= f.input :password, as: :hidden, input_html: { class: 'password' } unless site.pwd_not_needed %>
       <% end %>
+      
       <%= render 'actions', site: site %>
     </div>
   </div>
@@ -22,7 +25,7 @@
 <% when :sidebar %>
   <%= image_tag "http://img.bitpixels.com/getthumbnail?code=18452&size=200&url=#{site.url}", class: 'border' %>
   
-  <h3><span class="status <%= @online_status.to_words %>"></span><%= link_to site.name, server_site_path(site.server, site) %><%= image_tag "#{@site.url}/favicon.ico", class: 'favicon' %></h3>
+  <h3><span class="status <%= @current_site.online_status.to_words %>"></span><%= link_to site.name, server_site_path(site.server, site) %><%= image_tag "#{@site.url}/favicon.ico", class: 'favicon' %></h3>
   
   <ul class="side-nav">
     <%= render 'actions', site: site %>
@@ -32,9 +35,9 @@
 		<% if @online_status %><strong>Avg. Uptime:</strong> <%= @site.uptime :alltimeuptimeratio %>%<% end %>
 	</p>
   
-  <% if @latest_commit %>
+  <% if @current_site.latest_commit %>
     <p><strong>Latest Commit</strong><br>
-      &raquo; <%= link_to @latest_commit['commit']['message'], @latest_commit['html_url'], target: '_blank' %> <br><small><%= @latest_commit['commit']['committer']['name'] %> - <%= @latest_commit['commit']['committer']['date'].gsub!(/[^-:\d]/, ' ') %> </small>
+      &raquo; <%= link_to @current_site.latest_commit['commit']['message'], @current_site.latest_commit['html_url'], target: '_blank' %> <br><small><%= @current_site.latest_commit['commit']['committer']['name'] %> - <%= @current_site.latest_commit['commit']['committer']['date'].gsub!(/[^-:\d]/, ' ') %> </small>
     </p>
   <% end %>
     

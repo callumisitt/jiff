@@ -7,7 +7,7 @@
     <% if @password %>
       <%= simple_form_for @server, url: config_file_server_path(@server, @file) do |f| %>
         <%= f.input :input, label: false, as: :text, input_html: { value: @server.config(@file), data: {codemirror: true} } %>
-        <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @current_server.pwd_not_needed %>
+        <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @server.pwd_not_needed %>
         <%= f.button :submit, 'Update Config' %>
       <% end %>
     <% else %>

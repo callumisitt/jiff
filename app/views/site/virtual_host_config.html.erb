@@ -7,7 +7,7 @@
     <% if @password %>
       <%= simple_form_for @site, url: virtual_host_config_server_site_path(@server, @site) do |f| %>
         <%= f.input :input, label: false, as: :text, input_html: { value: @site.virtual_host_config, data: {codemirror: true} } %>
-        <%= f.input :password, as: :hidden, input_html: { value: params[:site][:password] } unless @pwd_not_needed %>
+        <%= f.input :password, as: :hidden, input_html: { value: params[:site][:password] } unless @site.pwd_not_needed %>
         <%= f.button :submit, 'Update Config' %>
       <% end %>
     <% else %>

@@ -5,6 +5,8 @@ class Site < ActiveRecord::Base
   
   delegate :user, :address, to: :server
   
+  default_scope -> { order(:name) }
+  
   attr_reader :password
   
   COMMANDS = %w[restart]
@@ -62,6 +64,10 @@ class Site < ActiveRecord::Base
   def enabled?
     enabled = ssh { capture :ls, '/etc/apache2/sites-enabled' }
     enabled.try(:include?, "#{server_ref}")
+  end
+  
+  def pwd_not_needed
+    true unless server.password_digest
   end
   
   def ssh(options = { }, &block)
