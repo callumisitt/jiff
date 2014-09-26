@@ -6,5 +6,6 @@
 		<% @command_output.each do |package| %>
 			$('#upgrades p').append("<%=j parse_package(package) %>");
 		<% end %>
+		$('.spinner.small').hide();
 	<% end %>
 <% end %>
