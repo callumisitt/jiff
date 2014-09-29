@@ -1,5 +1,6 @@
 class Server < ActiveRecord::Base
   include SSH
+  include Utility
     
   has_many :sites
   
@@ -9,8 +10,10 @@ class Server < ActiveRecord::Base
 
   attr_reader :log
   
-  COMMANDS = %w[check_upgrades restart reload_apache restart_apache]
+  COMMANDS = %w[check_upgrades apply_upgrades restart reload_apache restart_apache]
   LOCATIONS = {'apache' => '/etc/apache2/apache2.conf', 'varnish' => '/etc/varnish/default.vcl'}
+  
+  hide_commands :check_upgrades, :apply_upgrades
   
   # info
   
@@ -63,6 +66,10 @@ class Server < ActiveRecord::Base
       capture 'apt-get', '-s', :upgrade
     end
     upgrades.scan(/Inst(.[^\]]*)/).map { |u| u[0].strip.remove('[') }
+  end
+  
+  def apply_upgrades
+    sudo_ssh { capture 'apt-get', '-y', :upgrade }
   end
   
   def restart

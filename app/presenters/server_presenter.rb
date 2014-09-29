@@ -13,6 +13,6 @@ class ServerPresenter
   end
   
   def commands
-    Server::COMMANDS
+    Server::COMMANDS.reject { |command| Server.new.hidden_commands.include? command.to_sym }
   end
 end

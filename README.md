@@ -50,7 +50,7 @@ An existing Rails site can be made to deploy to the Vagrant box.
 		adapter: mysql2
 		host: 127.0.0.1
 		username: root
-		database: `DB NAME`
+		database: DB NAME
 	```
 
 4. Create the file `config/deploy/vagrant.rb` and enter the following (make sure to change the site name):
@@ -58,9 +58,9 @@ An existing Rails site can be made to deploy to the Vagrant box.
 	```
 	# The name of your application.  Used for deployment directory and filenames
 	# and Apache configs. Should be unique on the Brightbox
-	set :application, `SITE NAME`
-
-	set :domain, '`SITE NAME`.default'
+	set :application, 'SITE NAME'
+	
+	set :domain, 'SITE NAME.default'
 
 	## List of servers
 	server 'default', :app, :web, :db, primary: true

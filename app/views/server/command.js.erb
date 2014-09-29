@@ -6,6 +6,7 @@
 		<% @command_output.each do |package| %>
 			$('#upgrades p').append("<%=j parse_package(package) %>");
 		<% end %>
+		$('#upgrades p').append("<%=j render 'server/command', command: :apply_upgrades %>");
 		$('.spinner.small').hide();
 	<% end %>
 <% end %>
