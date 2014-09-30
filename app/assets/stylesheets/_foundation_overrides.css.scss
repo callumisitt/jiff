@@ -37,24 +37,25 @@ div.switch label
   margin-top: 1em;
 }
 
-.button-group
-{
-	&.stack li
-	{
-		margin-bottom: 10px;
-	}
-}
-
 .f-dropdown 
 {
 	outline: none;
+	
 	&:before, &:after
 	{
 		display: none;
 	}
-	.button-group li:hover
+	
+	.button-group li
 	{
-		background: none;
+		&:hover
+		{
+			background: none;
+		}
+		input
+		{
+			width: 100%;
+		}
 	}
 }
 

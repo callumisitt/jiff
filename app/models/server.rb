@@ -10,10 +10,10 @@ class Server < ActiveRecord::Base
 
   attr_reader :log
   
-  COMMANDS = %w[check_upgrades apply_upgrades restart reload_apache restart_apache]
+  COMMANDS = %w[restart reload_apache restart_apache check_upgrades apply_upgrades]
   LOCATIONS = {'apache' => '/etc/apache2/apache2.conf', 'varnish' => '/etc/varnish/default.vcl'}
   
-  hide_commands :check_upgrades, :apply_upgrades
+  hide_commands :apply_upgrades
   
   # info
   
@@ -69,7 +69,9 @@ class Server < ActiveRecord::Base
   end
   
   def apply_upgrades
-    sudo_ssh { capture 'apt-get', '-y', :upgrade }
+    sudo_ssh options = { output: true } do
+      execute 'apt-get', '-s', :upgrade
+    end
   end
   
   def restart

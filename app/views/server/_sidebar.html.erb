@@ -1,15 +1,10 @@
 <div class="small-12 large-3 columns sidebar">
   <div class="panel">
-	  <div class="server-item" data-server="<%= @server.id %>" data-view-type="sidebar">
+    <div class="server-item" data-server="<%= @server.id %>" data-view-type="sidebar">
       <div class="spinner"></div>
     </div>
   </div>
   
-  <div class="panel">
-    <div class="spinner small right"></div>
-    <h3>Upgrades</h3>
-    <div id="upgrades">
-      <p><%= render 'server/command', command: :check_upgrades %></p>
-    </div>
+  <div class="panel server-output hide">
   </div>
 </div>

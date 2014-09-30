@@ -1,5 +1,6 @@
 <div class="row">
   <div class="medium-<%= @current_server.view_width %> columns">
+    <div class="spinner small right"></div>
     <h3><span class="status <%= server.status.to_words %>"></span><%= link_to server.name, server_path(server) %></h3>
 
     <% if server.status == 2 %>
