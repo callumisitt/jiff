@@ -32,7 +32,7 @@ class SiteController < ApplicationController
   end
   
   def rake_task
-    @site.rake(params[:site][:input]) if submission?
+    @site.rake(params[:site][:input]) if params[:site]
   end
   
   def show; end

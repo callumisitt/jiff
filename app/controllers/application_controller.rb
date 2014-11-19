@@ -55,6 +55,7 @@ class ApplicationController < ActionController::Base
   end
   
   def submission?
+    # needs looking at, doesn't seem to work
     params[@controller.to_sym] && @password
   end
 end

@@ -26,6 +26,7 @@ class ServerController < ApplicationController
   end
   
   def command
+    # TODO: Find way to make this non-blocking
     @command_output = @server.send(params[:command])
     respond_to do |format|
       format.js { }
