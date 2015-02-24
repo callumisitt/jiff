@@ -70,7 +70,7 @@ class Server < ActiveRecord::Base
   
   def apply_upgrades
     sudo_ssh options = { output: true } do
-      # needs to be -y when ready
+      # TODO needs to be -y when ready
       execute 'apt-get', '-s', :upgrade
     end
   end
@@ -122,7 +122,7 @@ class Server < ActiveRecord::Base
   end
   
   def pwd_not_needed
-    true unless password_digest
+    password_digest.blank? ? true : false
   end
   
   def to_s

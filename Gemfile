@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.6'
+gem 'rails', '4.2.0'
 
 gem 'mysql2'
 gem 'redis'
+gem 'sidekiq'
 
 gem 'devise'
 gem 'rails_admin'
@@ -13,8 +14,7 @@ gem 'sshkit'
 
 gem 'jquery-rails'
 gem 'coffee-rails'
-gem 'sass-rails', '~> 4.0.3'
-gem 'compass-rails'
+gem 'sass-rails'
 gem 'uglifier'
 
 gem 'foundation-rails'

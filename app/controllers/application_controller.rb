@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
           flash[:alert] = 'Sorry, try again.'
         end
 	    end
-    elsif @server.password_digest.nil?
+    elsif @server.password_digest.blank?
       @pwd_not_needed = true
     end
     
@@ -52,10 +52,5 @@ class ApplicationController < ActionController::Base
     render params[:action]
   rescue
     redirect_to @parent_path, alert: message
-  end
-  
-  def submission?
-    # needs looking at, doesn't seem to work
-    params[@controller.to_sym] && @password
   end
 end

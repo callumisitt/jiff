@@ -1,26 +1,26 @@
 <%= render partial: 'message.js' %>
 
 <% if @password %>
-	$('.panel.server-output').html('<p></p>').show();
 	var output;
 	
 	<% case params[:command] %>
 	<% when 'check_upgrades' %>
+    $('.panel.server-output').html('<p></p>').removeClass('hide');
+    
 		<% @command_output.each do |package| %>
-			$('.panel.server-output p').append("<%=j parse_package(package) %>");
+      $('.panel.server-output p').append("<%=j parse_package(package) %>");
 		<% end %>
 		
 		<% if @command_output.count > 0 %>
-			output = "<%=j render 'server/command', command: :apply_upgrades %>"
+			output = "<%=j render 'server/command', command: :apply_upgrades, async: true %>"
 		<% else %>
 			output = "<em><%=j @server.name %> is fully up to date.</em>";
 		<% end %>
-		$('.panel.server-output p').append(output);
+		$('.panel.server-output').append(output);
 		
 	<% when 'apply_upgrades' %>
-		$('.panel.server-output p').append("<textarea class=\"output\"></textarea>");
-		stream("<%= @server.id %>");
+		stream("<%= @server.id %>", 'package-replace');
 	<% end %>
 	
-	$('.spinner.small').hide();
+	$('.spinner.small').addClass('hide');
 <% end %>

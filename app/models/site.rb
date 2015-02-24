@@ -67,7 +67,7 @@ class Site < ActiveRecord::Base
   end
   
   def pwd_not_needed
-    true unless server.password_digest
+    true if server.password_digest.blank?
   end
   
   def ssh(options = { }, &block)

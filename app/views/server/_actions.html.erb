@@ -2,7 +2,7 @@
 <div id="actions-drop-<%= @server.id %>" data-dropdown-content class="f-dropdown tiny" tabindex="-1">
   <ul class="button-group stack">
     <% @current_server.commands.each do |command| %>
-      <li><%= render 'command', command: command.to_sym %></li>
+      <li><%= render 'command', command: command.to_sym, async: false %></li>
     <% end %>
   </ul>
 </div>

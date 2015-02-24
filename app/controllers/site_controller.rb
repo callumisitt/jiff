@@ -44,4 +44,8 @@ class SiteController < ApplicationController
     @server = @site.server
     @current_site = SitePresenter.new(@site, @server)
   end
+  
+  def submission?
+    params[:site] && @password
+  end
 end

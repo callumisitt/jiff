@@ -1,19 +1,23 @@
 function submit_form(caller, form) {
 	$('.spinner.small').css('display', 'inline-block');
 	form.find('textarea.output').val('');
+  
+  form.bind('ajax:complete', function() { 
+    $('.spinner.small').hide();
+  });
 	
 	var id;
 	if (id = caller.attr('data-sudo')) {
  		handle_sudo(caller, form);
 	} else {
 	 form.submit();
-	}	
+	} 
 }
 
 function handle_sudo(caller, form) {
 	$('#sudo-hidden').foundation('reveal', 'open');
 	
-	$('.sudo-form').submit(function(sudo_form) {
+	form.submit(function(sudo_form) {
 		sudo_form.preventDefault();
 		$('#message').empty();
 		$('#sudo-hidden').foundation('reveal', 'close');
@@ -26,19 +30,37 @@ function handle_sudo(caller, form) {
 	});
 }
 
-function stream(server) {
+function output_response(response, output_type) {
+  switch (output_type) {
+    case 'textarea':
+      var output = $('textarea.output');
+      output.val(output.val() + response);
+      output.scrollTop(output[0].scrollHeight - output.height());
+      break;
+    case 'package-replace':
+      var parsePackage = /Inst(.[^\]]*)/;
+      response = parsePackage.exec(response);
+      if (response) {
+        response = response[1].trim().split(' ')[0].replace('.', '');
+        $('*[data-package=' + response + ']').css('color', 'green');
+      }
+      break;
+  }
+}
+
+function stream(server, output_type) {
+  output_type = output_type || 'textarea';
   var source = new EventSource('/server/' + server + '/output');
+  
 	source.addEventListener('heartbeat', function(e) { return e; });
   source.addEventListener('server_' + server + '.output', function(e) {
   	var response = $.parseJSON(e.data);
-    var output = $('textarea.output');
 		
 		if(response == '%END%') {
-			$('.spinner.small').hide();
+      $('.spinner.small').hide();
 		} else {
-      output.val(output.val() + response);
-      output.scrollTop(output[0].scrollHeight - output.height());
-		}
+      output_response(response, output_type);
+    }
   });
 	$(window).bind('beforeunload', function(){
 	  source.close();

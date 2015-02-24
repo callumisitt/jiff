@@ -24,3 +24,11 @@ main
 {
   margin-bottom: 20px;
 }
+
+.server-output
+{
+  textarea.output
+  {
+    min-height: 500px;
+  }
+}

@@ -11,6 +11,12 @@ class String
     value
   end
   
+  def to_boolean
+   return true if self == "true"
+   return false if self == "false"
+   nil
+  end
+  
   def shell
     string = Shellwords.escape self
     string.gsub!('%', '%%')

@@ -26,8 +26,11 @@ class ServerController < ApplicationController
   end
   
   def command
-    # TODO: Find way to make this non-blocking
-    @command_output = @server.send(params[:command])
+    if params[:async].to_boolean == true
+      @server.delay.send(params[:command])
+    else 
+      @command_output = @server.send(params[:command])
+    end
     respond_to do |format|
       format.js { }
       format.all { render nothing: true }
@@ -41,5 +44,9 @@ class ServerController < ApplicationController
   def server_init
     @server = Server.find(params[:id])
     @current_server = ServerPresenter.new(@server, request)
+  end
+  
+  def submission?
+    params[:server] && @password
   end
 end

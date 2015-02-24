@@ -1,4 +1,4 @@
-<%= simple_form_for @server, url: command_server_path(@server, command), remote: true do |f| %>
+<%= simple_form_for @server, url: command_server_path(@server, command, async: async.to_s), remote: true do |f| %>
   <input id="server-command-<%= command.to_s %>" name="server[command][<%= command.to_s %>]" type="button" class="small secondary button" value="<%= command.to_s.titleize %>" data-submit <%= @current_server.sudo %>>
   <%= f.input :password, as: :hidden, input_html: { class: 'password' } unless @server.pwd_not_needed %>
 <% end %>
