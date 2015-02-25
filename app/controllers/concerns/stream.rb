@@ -8,6 +8,8 @@ module Stream
     render nothing: true
   rescue IOError
     logger.info 'Closed stream'
+  rescue ActionController::Live::ClientDisconnected
+    logger.info 'Client disconnected'
   ensure
     @redis.quit
     response.stream.close

@@ -5,7 +5,7 @@
 	
 	<% case params[:command] %>
 	<% when 'check_upgrades' %>
-    $('.panel.server-output').html('<p></p>').removeClass('hide');
+    $('.panel.server-output').removeClass('hide');
     
 		<% @command_output.each do |package| %>
       $('.panel.server-output p').append("<%=j parse_package(package) %>");

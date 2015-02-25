@@ -1,4 +1,4 @@
-function submit_form(caller, form) {
+function submit_form(caller, form, server) {
 	$('.spinner.small').css('display', 'inline-block');
 	form.find('textarea.output').val('');
   
@@ -6,32 +6,24 @@ function submit_form(caller, form) {
     $('.spinner.small').hide();
   });
 	
-	var id;
-	if (id = caller.attr('data-sudo')) {
- 		handle_sudo(caller, form);
+	if (caller.data('sudo')) {
+ 		handle_sudo(caller, form, server);
 	} else {
 	 form.submit();
 	} 
 }
 
-function handle_sudo(caller, form) {
-	$('#sudo-hidden').foundation('reveal', 'open');
-	
-	form.submit(function(sudo_form) {
-		sudo_form.preventDefault();
-		$('#message').empty();
-		$('#sudo-hidden').foundation('reveal', 'close');
-		
-		var pwd = $(this).find('input.password').val();
-		form.find('input.password').val(pwd);
-		
-		$(this).unbind('submit'); // prevents submitting multiple times on error
-		form.submit();
-	});
+function handle_sudo(caller, form, server) {
+  if (sessionStorage.getItem('sudo-' + server)) {
+    form.find('input.password').val(sessionStorage.getItem('sudo'));
+    form.submit();
+  } else {
+  	$('#sudo').foundation('reveal', 'open');
+  }
 }
 
-function output_response(response, output_type) {
-  switch (output_type) {
+function output_response(response, outputType) {
+  switch (outputType) {
     case 'textarea':
       var output = $('textarea.output');
       output.val(output.val() + response);
@@ -42,14 +34,14 @@ function output_response(response, output_type) {
       response = parsePackage.exec(response);
       if (response) {
         response = response[1].trim().split(' ')[0].replace('.', '');
-        $('*[data-package=' + response + ']').css('color', 'green');
+        $('*[data-package=' + response + ']').addClass('success');
       }
       break;
   }
 }
 
-function stream(server, output_type) {
-  output_type = output_type || 'textarea';
+function stream(server, outputType) {
+  outputType = outputType || 'textarea';
   var source = new EventSource('/server/' + server + '/output');
   
 	source.addEventListener('heartbeat', function(e) { return e; });
@@ -59,7 +51,7 @@ function stream(server, output_type) {
 		if(response == '%END%') {
       $('.spinner.small').hide();
 		} else {
-      output_response(response, output_type);
+      output_response(response, outputType);
     }
   });
 	$(window).bind('beforeunload', function(){
@@ -71,16 +63,16 @@ $(document).ready(function() {
 	var server = $('body').data('server');
 	
 	if ( $(".ajax.output").length > 0 ) {
-		submit_form($(".ajax.output"), $(".ajax.output").closest('form'));
+		submit_form($(".ajax.output"), $(".ajax.output").closest('form'), server);
 	}
 
   $(document).on('click', '*[data-submit]', function(e) {
-  	submit_form($(this), $(this).closest('form'));
+  	submit_form($(this), $(this).closest('form'), server);
 		$('#actions-drop-' + server).foundation('dropdown', 'close', $('#actions-drop-' + server));
   });
 
   $('*[data-option-submit]').change(function() {
-    submit_form($(this), $(this).closest('form'));
+    submit_form($(this), $(this).closest('form'), server);
   });
   
   $("textarea[data-codemirror]").each(function() {
@@ -104,14 +96,22 @@ $(document).ready(function() {
     $(this).scrollTop($(this)[0].scrollHeight);
   });
   
-  $('.sudo').foundation('reveal', 'open');
-	$(document).on('opened', '[data-reveal]', function () {
+  if ($('#sudo').data('hidden') !== true) $('#sudo').foundation('reveal', 'open');
+	
+  $(document).on('opened', '[data-reveal]', function () {
 	  $("[id$=password]").first().focus();
 	});
+  
+  $('#sudo form').submit(function() {
+		$('#message').empty();
+		$('#sudo').foundation('reveal', 'close');
+	  
+    sessionStorage.setItem('sudo-' + server, $(this).find('input.password').val());
+	  $(this).submit();
+  });
 	  
   // stream output from server
   if (server != null && $('textarea.output').length) {
 		stream(server);
 	}
-  
 });

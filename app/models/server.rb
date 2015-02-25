@@ -71,7 +71,8 @@ class Server < ActiveRecord::Base
   def apply_upgrades
     sudo_ssh options = { output: true } do
       # TODO needs to be -y when ready
-      execute 'apt-get', '-s', :upgrade
+      execute 'apt-get', :update
+      execute 'apt-get', '-y', :upgrade
     end
   end
   

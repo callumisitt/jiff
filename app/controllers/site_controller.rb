@@ -24,7 +24,7 @@ class SiteController < ApplicationController
   end
   
   def view_log
-  	@site.view_log if submission?
+    @site.view_log if params[:site]
   end
   
   def virtual_host_config

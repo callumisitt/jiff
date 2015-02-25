@@ -29,3 +29,11 @@ img.border
   padding: 1px;
   border: 1px solid #ccc;
 }
+
+.success
+{
+  color: darken($success-color, 10);
+  background-image: image-url('icons/success.png');
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}

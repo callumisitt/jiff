@@ -31,9 +31,9 @@
     <%= render 'actions', site: site %>
   </ul>
   
-  <p>
-		<% if @online_status %><strong>Avg. Uptime:</strong> <%= @site.uptime :alltimeuptimeratio %>%<% end %>
-	</p>
+  <% if @online_status %>
+    <p><strong>Avg. Uptime:</strong> <%= @site.uptime :alltimeuptimeratio %>%</p>
+  <% end %>
   
   <% if @current_site.latest_commit %>
     <p><strong>Latest Commit</strong><br>

@@ -5,9 +5,9 @@
   </div>
 <% end %>
 
-<% type = defined?(hidden) ? 'sudo-hidden' : 'sudo' %>
+<% hidden = hidden ? 'true' : 'false' %>
 
-<div id="<%= type %>" class="<%= type %> reveal-modal tiny" data-reveal>
+<div id="sudo" class="reveal-modal tiny" data-reveal data-sudo="true" data-hidden=<%= hidden %>>
 	<%= render 'message' %>
 
   <%= simple_form_for item, url: url, html: { class: 'sudo-form' } do |f| %>
