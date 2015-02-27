@@ -1,5 +1,5 @@
-function submit_form(caller, form, server) {
-	$('.spinner.small').css('display', 'inline-block');
+function submit_form(caller, form, server, hideSpinner) {
+  hideSpinner ? null : $('.spinner.small').css('display', 'inline-block');
 	form.find('textarea.output').val('');
   
   form.bind('ajax:complete', function() { 
@@ -15,11 +15,27 @@ function submit_form(caller, form, server) {
 
 function handle_sudo(caller, form, server) {
   if (sessionStorage.getItem('sudo-' + server)) {
-    form.find('input.password').val(sessionStorage.getItem('sudo'));
+    form.find('input.password').val(sessionStorage.getItem('sudo-' + server));
     form.submit();
   } else {
-  	$('#sudo').foundation('reveal', 'open');
+  	set_sudo(server);
   }
+}
+
+function set_sudo(server) {
+  if (sessionStorage.getItem('sudo-' + server)) {
+    $('#sudo .password').hide().val(sessionStorage.getItem('sudo-' + server));
+    $('#sudo .button').val('Allow Sudo Access');
+  }
+  $('#sudo').foundation('reveal', 'open');
+}
+
+function submit_sudo(server) {
+	$('#message').empty();
+	$('#sudo').foundation('reveal', 'close');
+  
+  sessionStorage.setItem('sudo-' + server, $('#sudo form').find('input.password').val());
+  $('#sudo form').submit();
 }
 
 function output_response(response, outputType) {
@@ -62,19 +78,23 @@ function stream(server, outputType) {
 $(document).ready(function() {
 	var server = $('body').data('server');
 	
+  // get output for textarea
 	if ( $(".ajax.output").length > 0 ) {
-		submit_form($(".ajax.output"), $(".ajax.output").closest('form'), server);
+		submit_form($(".ajax.output"), $(".ajax.output").closest('form'), server, true);
 	}
 
+  // submut command events
   $(document).on('click', '*[data-submit]', function(e) {
   	submit_form($(this), $(this).closest('form'), server);
 		$('#actions-drop-' + server).foundation('dropdown', 'close', $('#actions-drop-' + server));
   });
 
+  // submit toggle/dropdown events
   $('*[data-option-submit]').change(function() {
-    submit_form($(this), $(this).closest('form'), server);
+    submit_form($(this), $(this).closest('form'), server, $(this).data('hide-spinner'));
   });
   
+  // set codemirror for config file editing
   $("textarea[data-codemirror]").each(function() {
     CodeMirror.fromTextArea($(this).get(0), {
       lineNumbers: true,
@@ -92,23 +112,20 @@ $(document).ready(function() {
     }, "html");
   });
   
+  // automatically scroll to end of textarea
   $("textarea").each(function() {
     $(this).scrollTop($(this)[0].scrollHeight);
   });
   
-  if ($('#sudo').data('hidden') !== true) $('#sudo').foundation('reveal', 'open');
+  // ask for sudo password on restricted pages
+  if ($('#sudo').data('hidden') !== true) set_sudo(server);
 	
   $(document).on('opened', '[data-reveal]', function () {
 	  $("[id$=password]").first().focus();
 	});
   
-  $('#sudo form').submit(function() {
-		$('#message').empty();
-		$('#sudo').foundation('reveal', 'close');
-	  
-    sessionStorage.setItem('sudo-' + server, $(this).find('input.password').val());
-	  $(this).submit();
-  });
+  // handle sudo password submission
+  $('#sudo form').submit(function() { submit_sudo(server); });
 	  
   // stream output from server
   if (server != null && $('textarea.output').length) {

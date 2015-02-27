@@ -6,7 +6,7 @@
   
     <% if @password %>
       <%= simple_form_for @server, url: view_log_server_path(@server), remote: true do |f| %>	    
-	      <%= f.input :log, as: :select, collection: @server.logs, label_method: ->(log) { log.remove('/var/log/') }, selected: @file, include_blank: true, input_html: { data: { 'option-submit' => :true } } %>
+	      <%= f.input :log, as: :select, collection: @server.logs, label_method: ->(log) { log.remove('/var/log/') }, selected: @file, include_blank: true, input_html: { data: { 'option-submit' => :true, 'hide-spinner' => :true } } %>
         <%= f.input :output, label: false, as: :text, disabled: true, input_html: { class: 'output', value: @server_log, rows: 40 } %>
         <%= f.input :password, as: :hidden, input_html: { value: params[:server][:password] } unless @server.pwd_not_needed %>
       <% end %>
